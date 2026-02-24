@@ -12,9 +12,9 @@ const DashboardModule = (() => {
   ];
 
   const domainIds = [
-    'problem_priority', 'certainty_evidence', 'benefits_harms',
-    'values_preferences', 'resource_requirements', 'cost_effectiveness',
-    'health_equity', 'acceptability', 'feasibility'
+    'priority', 'certainty', 'benefits_harms',
+    'values', 'resources', 'cost_effectiveness',
+    'equity', 'acceptability', 'feasibility'
   ];
 
   function render(container) {

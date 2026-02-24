@@ -102,14 +102,14 @@
 
   </div>
 
-  <!-- Help Panel (#14) -->
+  <!-- Help Panel + RAG (#14) -->
   <div class="help-panel" id="help-panel">
     <div class="help-panel-header">
-      <div class="help-panel-title">📖 Methodology Guide</div>
+      <div class="help-panel-title">📖 Knowledge Base</div>
       <button class="modal-close" onclick="App.toggleHelpPanel()">&times;</button>
     </div>
     <div class="help-panel-body" id="help-panel-body">
-      <!-- Populated by app.js on init -->
+      <!-- Populated by RAG module -->
     </div>
   </div>
 
@@ -129,6 +129,7 @@
   <script src="js/recommendation.js"></script>
   <script src="js/dashboard.js"></script>
   <script src="js/export.js"></script>
+  <script src="js/rag.js"></script>
   <script src="js/app.js"></script>
 
   <script>
@@ -138,8 +139,8 @@
       App.showToast('Project saved!', 'success');
     });
 
-    // Populate help panel
-    document.getElementById('help-panel-body').innerHTML = App.toggleHelpPanel ? '' : '';
+    // Initialize RAG knowledge base
+    RAG.init().then(() => RAG.renderPanel(document.getElementById('help-panel-body')));
 
     // Responsive menu button
     function checkMobile() {

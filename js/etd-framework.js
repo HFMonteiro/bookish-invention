@@ -3,50 +3,50 @@
 // ============================================
 
 const EtdModule = (() => {
-    let etdTemplate = null;
+  let etdTemplate = null;
 
-    async function loadTemplate() {
-        if (etdTemplate) return etdTemplate;
-        try {
-            const resp = await fetch('./data/etd-template.json');
-            etdTemplate = await resp.json();
-        } catch (e) {
-            console.error('Failed to load EtD template:', e);
-            etdTemplate = { domains: [] };
-        }
-        return etdTemplate;
+  async function loadTemplate() {
+    if (etdTemplate) return etdTemplate;
+    try {
+      const resp = await fetch('./data/etd-template.json');
+      etdTemplate = await resp.json();
+    } catch (e) {
+      console.error('Failed to load EtD template:', e);
+      etdTemplate = { domains: [] };
     }
+    return etdTemplate;
+  }
 
-    async function render(container) {
-        await loadTemplate();
-        const questions = State.getPicoQuestions();
+  async function render(container) {
+    await loadTemplate();
+    const questions = State.getPicoQuestions();
 
-        if (questions.length === 0) {
-            container.innerHTML = `
+    if (questions.length === 0) {
+      container.innerHTML = `
         <div class="content-header">
           <h1 class="content-title">Evidence to Decision Framework</h1>
           <p class="content-subtitle">Complete the EtD assessment for each PICO question across the 9 GRADE domains.</p>
         </div>
         <div class="empty-state">
-          <div class="empty-state-icon">📊</div>
+          <div class="empty-state-illustration">📊</div>
           <div class="empty-state-title">No PICO Questions</div>
           <div class="empty-state-text">You need to define PICO questions first before completing EtD assessments.</div>
           <button class="btn btn-primary" onclick="App.navigate('pico')">Go to PICO Questions</button>
         </div>
       `;
-            return;
-        }
+      return;
+    }
 
-        // PICO selector tabs
-        const currentPicoId = window._currentEtdPico || questions[0].id;
-        window._currentEtdPico = currentPicoId;
-        const currentPico = State.getPicoById(currentPicoId) || questions[0];
-        const assessments = State.getEtdAssessments(currentPico.id);
+    // PICO selector tabs
+    const currentPicoId = window._currentEtdPico || questions[0].id;
+    window._currentEtdPico = currentPicoId;
+    const currentPico = State.getPicoById(currentPicoId) || questions[0];
+    const assessments = State.getEtdAssessments(currentPico.id);
 
-        const completedDomains = etdTemplate.domains.filter(d => assessments[d.id]?.judgment).length;
-        const progressPct = Math.round((completedDomains / 9) * 100);
+    const completedDomains = etdTemplate.domains.filter(d => assessments[d.id]?.judgment).length;
+    const progressPct = Math.round((completedDomains / 9) * 100);
 
-        container.innerHTML = `
+    container.innerHTML = `
       <div class="content-header">
         <div class="flex items-center justify-between">
           <div>
@@ -93,14 +93,14 @@ const EtdModule = (() => {
       </div>
     `;
 
-        attachEvents(container, currentPico.id);
-    }
+    attachEvents(container, currentPico.id);
+  }
 
-    function renderDomain(domain, assessment, picoId) {
-        const isComplete = assessment?.judgment;
-        const openClass = '';  // collapsed by default
+  function renderDomain(domain, assessment, picoId) {
+    const isComplete = assessment?.judgment;
+    const openClass = '';  // collapsed by default
 
-        return `
+    return `
       <div class="etd-domain ${openClass}" data-domain-id="${domain.id}">
         <div class="etd-domain-header">
           <div class="etd-domain-header-left">
@@ -144,64 +144,64 @@ const EtdModule = (() => {
         </div>
       </div>
     `;
-    }
+  }
 
-    function getJudgmentLabel(domain, value) {
-        const opt = domain.scale.find(o => o.value === value);
-        return opt ? opt.label : value;
-    }
+  function getJudgmentLabel(domain, value) {
+    const opt = domain.scale.find(o => o.value === value);
+    return opt ? opt.label : value;
+  }
 
-    function attachEvents(container, picoId) {
-        // Toggle domain accordion
-        container.querySelectorAll('.etd-domain-header').forEach(header => {
-            header.addEventListener('click', () => {
-                header.parentElement.classList.toggle('open');
-            });
-        });
+  function attachEvents(container, picoId) {
+    // Toggle domain accordion
+    container.querySelectorAll('.etd-domain-header').forEach(header => {
+      header.addEventListener('click', () => {
+        header.parentElement.classList.toggle('open');
+      });
+    });
 
-        // PICO tab switching
-        container.querySelectorAll('#etd-pico-tabs .tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                window._currentEtdPico = tab.dataset.picoId;
-                App.navigate('etd');
-            });
-        });
+    // PICO tab switching
+    container.querySelectorAll('#etd-pico-tabs .tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        window._currentEtdPico = tab.dataset.picoId;
+        App.navigate('etd');
+      });
+    });
 
-        // Auto-save on scale change
-        container.querySelectorAll('input[type="radio"][data-domain]').forEach(radio => {
-            radio.addEventListener('change', (e) => {
-                const domainId = e.target.dataset.domain;
-                const fieldId = e.target.dataset.field;
-                saveField(picoId, domainId, fieldId, e.target.value);
-            });
-        });
+    // Auto-save on scale change
+    container.querySelectorAll('input[type="radio"][data-domain]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        const domainId = e.target.dataset.domain;
+        const fieldId = e.target.dataset.field;
+        saveField(picoId, domainId, fieldId, e.target.value);
+      });
+    });
 
-        // Auto-save on textarea blur
-        container.querySelectorAll('.etd-field').forEach(textarea => {
-            textarea.addEventListener('blur', (e) => {
-                const domainId = e.target.dataset.domain;
-                const fieldId = e.target.dataset.field;
-                saveField(picoId, domainId, fieldId, e.target.value);
-            });
-        });
+    // Auto-save on textarea blur
+    container.querySelectorAll('.etd-field').forEach(textarea => {
+      textarea.addEventListener('blur', (e) => {
+        const domainId = e.target.dataset.domain;
+        const fieldId = e.target.dataset.field;
+        saveField(picoId, domainId, fieldId, e.target.value);
+      });
+    });
 
-        // Next button
-        container.querySelector('#btn-etd-next')?.addEventListener('click', () => {
-            App.navigate('decision');
-        });
-    }
+    // Next button
+    container.querySelector('#btn-etd-next')?.addEventListener('click', () => {
+      App.navigate('decision');
+    });
+  }
 
-    function saveField(picoId, domainId, fieldId, value) {
-        const current = State.getEtdAssessment(picoId, domainId) || {};
-        current[fieldId] = value;
-        State.setEtdAssessment(picoId, domainId, current);
-        App.updateSidebar();
-    }
+  function saveField(picoId, domainId, fieldId, value) {
+    const current = State.getEtdAssessment(picoId, domainId) || {};
+    current[fieldId] = value;
+    State.setEtdAssessment(picoId, domainId, current);
+    App.updateSidebar();
+  }
 
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    }
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
 
-    return { render };
+  return { render };
 })();

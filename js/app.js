@@ -40,9 +40,13 @@ const App = (() => {
         initAutoSave();        // #3
         captureMilestoneBaseline();
 
-        // Populate help panel (#14)
-        const helpBody = document.getElementById('help-panel-body');
-        if (helpBody) helpBody.innerHTML = getHelpContent();
+        // Initialize RAG knowledge base for help panel
+        if (typeof RAG !== 'undefined') {
+            RAG.init().then(() => {
+                const helpBody = document.getElementById('help-panel-body');
+                if (helpBody) RAG.renderPanel(helpBody);
+            });
+        }
 
         // Listen for state changes to update pipeline/sidebar
         State.on('change', () => {
@@ -129,6 +133,14 @@ const App = (() => {
 
         // Update pipeline
         renderPipeline();
+
+        // Refresh RAG context tips for current step
+        if (typeof RAG !== 'undefined') {
+            const helpBody = document.getElementById('help-panel-body');
+            if (helpBody && helpBody.querySelector('.rag-panel')) {
+                RAG.renderPanel(helpBody);
+            }
+        }
 
         // Page transition (#4)
         const container = document.getElementById('main-content');

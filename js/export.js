@@ -4,20 +4,20 @@
 
 const ExportModule = (() => {
 
-    function render(container) {
-        if (!State.hasProject()) {
-            container.innerHTML = `
+  function render(container) {
+    if (!State.hasProject()) {
+      container.innerHTML = `
         <div class="empty-state">
-          <div class="empty-state-icon">📤</div>
+          <div class="empty-state-illustration">📤</div>
           <div class="empty-state-title">No Project to Export</div>
           <div class="empty-state-text">Create a project first.</div>
           <button class="btn btn-primary" onclick="App.navigate('project')">Get Started</button>
         </div>
       `;
-            return;
-        }
+      return;
+    }
 
-        container.innerHTML = `
+    container.innerHTML = `
       <div class="content-header">
         <h1 class="content-title">Export & Report</h1>
         <p class="content-subtitle">Generate reports and export your guideline data.</p>
@@ -70,161 +70,161 @@ const ExportModule = (() => {
       </div>
     `;
 
-        attachEvents(container);
+    attachEvents(container);
+  }
+
+  function attachEvents(container) {
+    container.querySelector('#btn-export-md')?.addEventListener('click', () => {
+      const md = generateMarkdownReport();
+      const preview = container.querySelector('#report-preview');
+      const content = container.querySelector('#report-content');
+      content.textContent = md;
+      preview.style.display = 'block';
+      preview.scrollIntoView({ behavior: 'smooth' });
+
+      // Also download
+      downloadFile(md, getFileName('md'), 'text/markdown');
+      App.showToast('Report generated!', 'success');
+    });
+
+    container.querySelector('#btn-export-json')?.addEventListener('click', () => {
+      const json = State.exportJSON();
+      downloadFile(json, getFileName('json'), 'application/json');
+      App.showToast('JSON exported!', 'success');
+    });
+
+    container.querySelector('#btn-export-print')?.addEventListener('click', () => {
+      openPrintView();
+    });
+
+    container.querySelector('#btn-copy-report')?.addEventListener('click', () => {
+      const content = container.querySelector('#report-content').textContent;
+      navigator.clipboard.writeText(content).then(() => {
+        App.showToast('Copied to clipboard!', 'success');
+      });
+    });
+  }
+
+  function generateMarkdownReport() {
+    const project = State.get();
+    const m = project.meta;
+    const questions = State.getPicoQuestions();
+    const sources = State.getSourceGuidelines();
+
+    let md = '';
+
+    // Title
+    md += `# ${m.title}\n\n`;
+    md += `**Status:** ${m.status}  \n`;
+    md += `**Authors:** ${m.authors || 'N/A'}  \n`;
+    md += `**Date:** ${new Date(m.dateModified).toLocaleDateString()}  \n`;
+    md += `**Target Population:** ${m.targetPopulation || 'N/A'}  \n\n`;
+
+    // Scope
+    if (m.scope) {
+      md += `## Scope\n\n${m.scope}\n\n`;
     }
 
-    function attachEvents(container) {
-        container.querySelector('#btn-export-md')?.addEventListener('click', () => {
-            const md = generateMarkdownReport();
-            const preview = container.querySelector('#report-preview');
-            const content = container.querySelector('#report-content');
-            content.textContent = md;
-            preview.style.display = 'block';
-            preview.scrollIntoView({ behavior: 'smooth' });
+    md += `---\n\n`;
 
-            // Also download
-            downloadFile(md, getFileName('md'), 'text/markdown');
-            App.showToast('Report generated!', 'success');
-        });
+    // Methodology
+    md += `## Methodology\n\n`;
+    md += `This guideline was developed using the **GRADE-ADOLOPMENT** methodology `;
+    md += `(Schünemann HJ et al., J Clin Epidemiol 2017;81:101-110), which combines `;
+    md += `adoption, adaptation, and de novo development of recommendations using the `;
+    md += `GRADE Evidence to Decision (EtD) framework.\n\n`;
 
-        container.querySelector('#btn-export-json')?.addEventListener('click', () => {
-            const json = State.exportJSON();
-            downloadFile(json, getFileName('json'), 'application/json');
-            App.showToast('JSON exported!', 'success');
-        });
-
-        container.querySelector('#btn-export-print')?.addEventListener('click', () => {
-            openPrintView();
-        });
-
-        container.querySelector('#btn-copy-report')?.addEventListener('click', () => {
-            const content = container.querySelector('#report-content').textContent;
-            navigator.clipboard.writeText(content).then(() => {
-                App.showToast('Copied to clipboard!', 'success');
-            });
-        });
+    // Source Guidelines
+    if (sources.length > 0) {
+      md += `## Source Guidelines\n\n`;
+      sources.forEach((s, i) => {
+        md += `${i + 1}. **${s.title}** — ${s.organization || ''} (${s.year || 'n.d.'})`;
+        if (s.trustworthiness) md += ` [Trustworthiness: ${s.trustworthiness}]`;
+        md += `\n`;
+      });
+      md += `\n`;
     }
 
-    function generateMarkdownReport() {
-        const project = State.get();
-        const m = project.meta;
-        const questions = State.getPicoQuestions();
-        const sources = State.getSourceGuidelines();
+    // PICO Questions & Recommendations
+    md += `## Recommendations\n\n`;
 
-        let md = '';
+    questions.forEach((q, i) => {
+      const decision = State.getDecision(q.id);
+      const rec = State.getRecommendation(q.id);
+      const assessments = State.getEtdAssessments(q.id);
 
-        // Title
-        md += `# ${m.title}\n\n`;
-        md += `**Status:** ${m.status}  \n`;
-        md += `**Authors:** ${m.authors || 'N/A'}  \n`;
-        md += `**Date:** ${new Date(m.dateModified).toLocaleDateString()}  \n`;
-        md += `**Target Population:** ${m.targetPopulation || 'N/A'}  \n\n`;
+      md += `### Q${i + 1}: ${q.topic || 'PICO Question'}\n\n`;
+      md += `| Component | Description |\n|-----------|-------------|\n`;
+      md += `| Population | ${q.population || '—'} |\n`;
+      md += `| Intervention | ${q.intervention || '—'} |\n`;
+      md += `| Comparison | ${q.comparison || '—'} |\n`;
+      md += `| Outcome | ${q.outcome || '—'} |\n`;
+      md += `| Priority | ${q.priority || '—'} |\n\n`;
 
-        // Scope
-        if (m.scope) {
-            md += `## Scope\n\n${m.scope}\n\n`;
+      // Decision
+      if (decision?.type) {
+        md += `**ADOLOPMENT Decision:** ${decision.type.toUpperCase()}\n\n`;
+        if (decision.justification) {
+          md += `*Justification:* ${decision.justification}\n\n`;
         }
+      }
 
-        md += `---\n\n`;
+      // Recommendation
+      if (rec?.text) {
+        md += `**Recommendation:**\n> ${rec.text}\n\n`;
 
-        // Methodology
-        md += `## Methodology\n\n`;
-        md += `This guideline was developed using the **GRADE-ADOLOPMENT** methodology `;
-        md += `(Schünemann HJ et al., J Clin Epidemiol 2017;81:101-110), which combines `;
-        md += `adoption, adaptation, and de novo development of recommendations using the `;
-        md += `GRADE Evidence to Decision (EtD) framework.\n\n`;
-
-        // Source Guidelines
-        if (sources.length > 0) {
-            md += `## Source Guidelines\n\n`;
-            sources.forEach((s, i) => {
-                md += `${i + 1}. **${s.title}** — ${s.organization || ''} (${s.year || 'n.d.'})`;
-                if (s.trustworthiness) md += ` [Trustworthiness: ${s.trustworthiness}]`;
-                md += `\n`;
-            });
-            md += `\n`;
+        if (rec.strength) {
+          const strengthLabels = {
+            strong_for: 'Strong recommendation FOR the intervention',
+            conditional_for: 'Conditional recommendation FOR the intervention',
+            conditional_against: 'Conditional recommendation AGAINST the intervention',
+            strong_against: 'Strong recommendation AGAINST the intervention'
+          };
+          md += `- **Strength:** ${strengthLabels[rec.strength] || rec.strength}\n`;
         }
+        if (rec.certainty) {
+          md += `- **Certainty of evidence:** ${rec.certainty.replace(/_/g, ' ').toUpperCase()}\n`;
+        }
+        md += `\n`;
+        if (rec.remarks) {
+          md += `**Remarks:** ${rec.remarks}\n\n`;
+        }
+        if (rec.researchGaps) {
+          md += `**Research Gaps:** ${rec.researchGaps}\n\n`;
+        }
+      }
 
-        // PICO Questions & Recommendations
-        md += `## Recommendations\n\n`;
-
-        questions.forEach((q, i) => {
-            const decision = State.getDecision(q.id);
-            const rec = State.getRecommendation(q.id);
-            const assessments = State.getEtdAssessments(q.id);
-
-            md += `### Q${i + 1}: ${q.topic || 'PICO Question'}\n\n`;
-            md += `| Component | Description |\n|-----------|-------------|\n`;
-            md += `| Population | ${q.population || '—'} |\n`;
-            md += `| Intervention | ${q.intervention || '—'} |\n`;
-            md += `| Comparison | ${q.comparison || '—'} |\n`;
-            md += `| Outcome | ${q.outcome || '—'} |\n`;
-            md += `| Priority | ${q.priority || '—'} |\n\n`;
-
-            // Decision
-            if (decision?.type) {
-                md += `**ADOLOPMENT Decision:** ${decision.type.toUpperCase()}\n\n`;
-                if (decision.justification) {
-                    md += `*Justification:* ${decision.justification}\n\n`;
-                }
-            }
-
-            // Recommendation
-            if (rec?.text) {
-                md += `**Recommendation:**\n> ${rec.text}\n\n`;
-
-                if (rec.strength) {
-                    const strengthLabels = {
-                        strong_for: 'Strong recommendation FOR the intervention',
-                        conditional_for: 'Conditional recommendation FOR the intervention',
-                        conditional_against: 'Conditional recommendation AGAINST the intervention',
-                        strong_against: 'Strong recommendation AGAINST the intervention'
-                    };
-                    md += `- **Strength:** ${strengthLabels[rec.strength] || rec.strength}\n`;
-                }
-                if (rec.certainty) {
-                    md += `- **Certainty of evidence:** ${rec.certainty.replace(/_/g, ' ').toUpperCase()}\n`;
-                }
-                md += `\n`;
-                if (rec.remarks) {
-                    md += `**Remarks:** ${rec.remarks}\n\n`;
-                }
-                if (rec.researchGaps) {
-                    md += `**Research Gaps:** ${rec.researchGaps}\n\n`;
-                }
-            }
-
-            // EtD Summary
-            if (Object.keys(assessments).length > 0) {
-                md += `**EtD Framework Summary:**\n\n`;
-                md += `| Domain | Judgment | Justification |\n|--------|----------|---------------|\n`;
-                const domainNames = {
-                    priority: 'Priority', certainty: 'Certainty', benefits_harms: 'Benefits/Harms',
-                    values: 'Values', resources: 'Resources', cost_effectiveness: 'Cost-Effectiveness',
-                    equity: 'Equity', acceptability: 'Acceptability', feasibility: 'Feasibility'
-                };
-                Object.entries(assessments).forEach(([domainId, data]) => {
-                    if (data.judgment) {
-                        md += `| ${domainNames[domainId] || domainId} | ${data.judgment.replace(/_/g, ' ')} | ${(data.justification || '—').substring(0, 80)} |\n`;
-                    }
-                });
-                md += `\n`;
-            }
-
-            md += `---\n\n`;
+      // EtD Summary
+      if (Object.keys(assessments).length > 0) {
+        md += `**EtD Framework Summary:**\n\n`;
+        md += `| Domain | Judgment | Justification |\n|--------|----------|---------------|\n`;
+        const domainNames = {
+          priority: 'Priority of the Problem', certainty: 'Certainty of Evidence', benefits_harms: 'Balance of Benefits and Harms',
+          values: 'Values and Preferences', resources: 'Resource Requirements', cost_effectiveness: 'Cost-Effectiveness',
+          equity: 'Equity, Equality, and Non-Discrimination', acceptability: 'Acceptability', feasibility: 'Feasibility'
+        };
+        Object.entries(assessments).forEach(([domainId, data]) => {
+          if (data.judgment) {
+            md += `| ${domainNames[domainId] || domainId} | ${data.judgment.replace(/_/g, ' ')} | ${(data.justification || '—').substring(0, 80)} |\n`;
+          }
         });
+        md += `\n`;
+      }
 
-        // Footer
-        md += `\n*Generated by GRADE-ADOLOPMENT App on ${new Date().toLocaleDateString()}*\n`;
+      md += `---\n\n`;
+    });
 
-        return md;
-    }
+    // Footer
+    md += `\n*Generated by GRADE-ADOLOPMENT App on ${new Date().toLocaleDateString()}*\n`;
 
-    function openPrintView() {
-        const md = generateMarkdownReport();
-        const html = markdownToHtml(md);
-        const printWindow = window.open('', '_blank');
-        printWindow.document.write(`
+    return md;
+  }
+
+  function openPrintView() {
+    const md = generateMarkdownReport();
+    const html = markdownToHtml(md);
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
       <!DOCTYPE html>
       <html>
       <head>
@@ -246,50 +246,50 @@ const ExportModule = (() => {
       <body>${html}</body>
       </html>
     `);
-        printWindow.document.close();
-        setTimeout(() => printWindow.print(), 500);
-    }
+    printWindow.document.close();
+    setTimeout(() => printWindow.print(), 500);
+  }
 
-    function markdownToHtml(md) {
-        return md
-            .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-            .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-            .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-            .replace(/\*(.+?)\*/g, '<em>$1</em>')
-            .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
-            .replace(/^---$/gm, '<hr>')
-            .replace(/^- (.+)$/gm, '<li>$1</li>')
-            .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
-            .replace(/\n\n/g, '</p><p>')
-            .replace(/\|(.+)\|\n\|[-| ]+\|\n/g, (match, headerRow) => {
-                const headers = headerRow.split('|').map(h => h.trim()).filter(Boolean);
-                return `<table><thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>`;
-            })
-            .replace(/\|(.+)\|/g, (match, row) => {
-                const cells = row.split('|').map(c => c.trim()).filter(Boolean);
-                return `<tr>${cells.map(c => `<td>${c}</td>`).join('')}</tr>`;
-            })
-            .replace(/(<\/tr>\n?)(?=\n(?!<tr>|\|))/g, '$1</tbody></table>')
-            .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
-            .replace(/\n/g, '<br>');
-    }
+  function markdownToHtml(md) {
+    return md
+      .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+      .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+      .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
+      .replace(/^---$/gm, '<hr>')
+      .replace(/^- (.+)$/gm, '<li>$1</li>')
+      .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
+      .replace(/\n\n/g, '</p><p>')
+      .replace(/\|(.+)\|\n\|[-| ]+\|\n/g, (match, headerRow) => {
+        const headers = headerRow.split('|').map(h => h.trim()).filter(Boolean);
+        return `<table><thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>`;
+      })
+      .replace(/\|(.+)\|/g, (match, row) => {
+        const cells = row.split('|').map(c => c.trim()).filter(Boolean);
+        return `<tr>${cells.map(c => `<td>${c}</td>`).join('')}</tr>`;
+      })
+      .replace(/(<\/tr>\n?)(?=\n(?!<tr>|\|))/g, '$1</tbody></table>')
+      .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
+      .replace(/\n/g, '<br>');
+  }
 
-    function getFileName(ext) {
-        const project = State.get();
-        const name = (project?.meta?.title || 'guideline').replace(/[^a-zA-Z0-9]/g, '_').substring(0, 40);
-        return `${name}_${new Date().toISOString().split('T')[0]}.${ext}`;
-    }
+  function getFileName(ext) {
+    const project = State.get();
+    const name = (project?.meta?.title || 'guideline').replace(/[^a-zA-Z0-9]/g, '_').substring(0, 40);
+    return `${name}_${new Date().toISOString().split('T')[0]}.${ext}`;
+  }
 
-    function downloadFile(content, filename, mimeType) {
-        const blob = new Blob([content], { type: mimeType });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        a.click();
-        URL.revokeObjectURL(url);
-    }
+  function downloadFile(content, filename, mimeType) {
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
 
-    return { render };
+  return { render };
 })();

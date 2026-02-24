@@ -4,26 +4,26 @@
 
 const DecisionModule = (() => {
 
-    function render(container) {
-        const questions = State.getPicoQuestions();
+  function render(container) {
+    const questions = State.getPicoQuestions();
 
-        if (questions.length === 0) {
-            container.innerHTML = `
+    if (questions.length === 0) {
+      container.innerHTML = `
         <div class="content-header">
           <h1 class="content-title">ADOLOPMENT Decisions</h1>
           <p class="content-subtitle">For each PICO question, decide whether to adopt, adapt, or develop de novo.</p>
         </div>
         <div class="empty-state">
-          <div class="empty-state-icon">⚖️</div>
+          <div class="empty-state-illustration">⚖️</div>
           <div class="empty-state-title">No PICO Questions</div>
           <div class="empty-state-text">Define PICO questions and complete EtD assessments first.</div>
           <button class="btn btn-primary" onclick="App.navigate('pico')">Go to PICO Questions</button>
         </div>
       `;
-            return;
-        }
+      return;
+    }
 
-        container.innerHTML = `
+    container.innerHTML = `
       <div class="content-header">
         <h1 class="content-title">ADOLOPMENT Decisions</h1>
         <p class="content-subtitle">
@@ -37,16 +37,16 @@ const DecisionModule = (() => {
       </div>
     `;
 
-        attachEvents(container);
-    }
+    attachEvents(container);
+  }
 
-    function renderDecisionCard(q, idx) {
-        const decision = State.getDecision(q.id) || {};
-        const assessments = State.getEtdAssessments(q.id);
-        const completedDomains = Object.keys(assessments).filter(k => assessments[k]?.judgment).length;
-        const suggestion = suggestDecision(q.id);
+  function renderDecisionCard(q, idx) {
+    const decision = State.getDecision(q.id) || {};
+    const assessments = State.getEtdAssessments(q.id);
+    const completedDomains = Object.keys(assessments).filter(k => assessments[k]?.judgment).length;
+    const suggestion = suggestDecision(q.id);
 
-        return `
+    return `
       <div class="card" data-pico-id="${q.id}">
         <div class="card-header">
           <div>
@@ -131,100 +131,100 @@ const DecisionModule = (() => {
         </div>
       </div>
     `;
+  }
+
+  function suggestDecision(picoId) {
+    const assessments = State.getEtdAssessments(picoId);
+    const sources = State.getSourceGuidelines();
+    const completedDomains = Object.keys(assessments).filter(k => assessments[k]?.judgment).length;
+
+    if (completedDomains < 3) {
+      return { message: 'Complete more EtD domains to receive a suggestion.', color: '#94A3B8' };
     }
 
-    function suggestDecision(picoId) {
-        const assessments = State.getEtdAssessments(picoId);
-        const sources = State.getSourceGuidelines();
-        const completedDomains = Object.keys(assessments).filter(k => assessments[k]?.judgment).length;
+    if (sources.length === 0) {
+      return { message: 'No source guidelines registered. Consider developing de novo or add source guidelines first.', color: '#009ADE' };
+    }
 
-        if (completedDomains < 3) {
-            return { message: 'Complete more EtD domains to receive a suggestion.', color: '#94A3B8' };
+    const highTrustSources = sources.filter(s => s.trustworthiness === 'high');
+    if (highTrustSources.length === 0) {
+      return { message: 'No high-trustworthiness source guidelines found. Consider adaptation with caution or de novo development.', color: '#F5A623' };
+    }
+
+    // Simple heuristic based on contextual domains
+    const contextDomains = ['values', 'resources', 'cost_effectiveness', 'equity', 'acceptability', 'feasibility'];
+    let contextChanges = 0;
+    contextDomains.forEach(d => {
+      const a = assessments[d];
+      if (a && a.judgment) {
+        if (['no', 'probably_no', 'large_costs', 'reduced', 'favors_comparison'].includes(a.judgment)) {
+          contextChanges++;
         }
+      }
+    });
 
-        if (sources.length === 0) {
-            return { message: 'No source guidelines registered. Consider developing de novo or add source guidelines first.', color: '#009ADE' };
-        }
+    if (contextChanges === 0 && highTrustSources.length > 0) {
+      return { message: 'Context aligns well with source guidelines. Consider <strong>Adoption</strong>.', color: '#4CAF50' };
+    } else if (contextChanges <= 2) {
+      return { message: `${contextChanges} contextual domain(s) differ from source. Consider <strong>Adaptation</strong>.`, color: '#F5A623' };
+    } else {
+      return { message: `${contextChanges} contextual domains differ significantly. Consider <strong>De Novo</strong> development.`, color: '#009ADE' };
+    }
+  }
 
-        const highTrustSources = sources.filter(s => s.trustworthiness === 'high');
-        if (highTrustSources.length === 0) {
-            return { message: 'No high-trustworthiness source guidelines found. Consider adaptation with caution or de novo development.', color: '#F5A623' };
-        }
+  function attachEvents(container) {
+    // Decision type radio
+    container.querySelectorAll('input[type="radio"][data-pico]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        const picoId = e.target.dataset.pico;
+        const current = State.getDecision(picoId) || {};
+        current.type = e.target.value;
+        State.setDecision(picoId, current);
+        App.updateSidebar();
+      });
+    });
 
-        // Simple heuristic based on contextual domains
-        const contextDomains = ['values', 'resources', 'cost_effectiveness', 'equity', 'acceptability', 'feasibility'];
-        let contextChanges = 0;
-        contextDomains.forEach(d => {
-            const a = assessments[d];
-            if (a && a.judgment) {
-                if (['no', 'probably_no', 'large_costs', 'reduced', 'favors_comparison'].includes(a.judgment)) {
-                    contextChanges++;
-                }
-            }
-        });
+    // Source select
+    container.querySelectorAll('.decision-source').forEach(sel => {
+      sel.addEventListener('change', (e) => {
+        const picoId = e.target.dataset.pico;
+        const current = State.getDecision(picoId) || {};
+        current.sourceId = e.target.value;
+        State.setDecision(picoId, current);
+      });
+    });
 
-        if (contextChanges === 0 && highTrustSources.length > 0) {
-            return { message: 'Context aligns well with source guidelines. Consider <strong>Adoption</strong>.', color: '#4CAF50' };
-        } else if (contextChanges <= 2) {
-            return { message: `${contextChanges} contextual domain(s) differ from source. Consider <strong>Adaptation</strong>.`, color: '#F5A623' };
+    // Justification
+    container.querySelectorAll('.decision-justification').forEach(ta => {
+      ta.addEventListener('blur', (e) => {
+        const picoId = e.target.dataset.pico;
+        const current = State.getDecision(picoId) || {};
+        current.justification = e.target.value;
+        State.setDecision(picoId, current);
+      });
+    });
+
+    // Diff domains checkboxes
+    container.querySelectorAll('.decision-domain-diff').forEach(cb => {
+      cb.addEventListener('change', (e) => {
+        const picoId = e.target.dataset.pico;
+        const domain = e.target.dataset.domain;
+        const current = State.getDecision(picoId) || {};
+        if (!current.diffDomains) current.diffDomains = [];
+        if (e.target.checked) {
+          if (!current.diffDomains.includes(domain)) current.diffDomains.push(domain);
         } else {
-            return { message: `${contextChanges} contextual domains differ significantly. Consider <strong>De Novo</strong> development.`, color: '#009ADE' };
+          current.diffDomains = current.diffDomains.filter(d => d !== domain);
         }
-    }
+        State.setDecision(picoId, current);
+      });
+    });
+  }
 
-    function attachEvents(container) {
-        // Decision type radio
-        container.querySelectorAll('input[type="radio"][data-pico]').forEach(radio => {
-            radio.addEventListener('change', (e) => {
-                const picoId = e.target.dataset.pico;
-                const current = State.getDecision(picoId) || {};
-                current.type = e.target.value;
-                State.setDecision(picoId, current);
-                App.updateSidebar();
-            });
-        });
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
 
-        // Source select
-        container.querySelectorAll('.decision-source').forEach(sel => {
-            sel.addEventListener('change', (e) => {
-                const picoId = e.target.dataset.pico;
-                const current = State.getDecision(picoId) || {};
-                current.sourceId = e.target.value;
-                State.setDecision(picoId, current);
-            });
-        });
-
-        // Justification
-        container.querySelectorAll('.decision-justification').forEach(ta => {
-            ta.addEventListener('blur', (e) => {
-                const picoId = e.target.dataset.pico;
-                const current = State.getDecision(picoId) || {};
-                current.justification = e.target.value;
-                State.setDecision(picoId, current);
-            });
-        });
-
-        // Diff domains checkboxes
-        container.querySelectorAll('.decision-domain-diff').forEach(cb => {
-            cb.addEventListener('change', (e) => {
-                const picoId = e.target.dataset.pico;
-                const domain = e.target.dataset.domain;
-                const current = State.getDecision(picoId) || {};
-                if (!current.diffDomains) current.diffDomains = [];
-                if (e.target.checked) {
-                    if (!current.diffDomains.includes(domain)) current.diffDomains.push(domain);
-                } else {
-                    current.diffDomains = current.diffDomains.filter(d => d !== domain);
-                }
-                State.setDecision(picoId, current);
-            });
-        });
-    }
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    }
-
-    return { render };
+  return { render };
 })();

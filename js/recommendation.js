@@ -4,26 +4,26 @@
 
 const RecommendationModule = (() => {
 
-    function render(container) {
-        const questions = State.getPicoQuestions();
+  function render(container) {
+    const questions = State.getPicoQuestions();
 
-        if (questions.length === 0) {
-            container.innerHTML = `
+    if (questions.length === 0) {
+      container.innerHTML = `
         <div class="content-header">
           <h1 class="content-title">Recommendations</h1>
           <p class="content-subtitle">Formulate recommendations for each PICO question.</p>
         </div>
         <div class="empty-state">
-          <div class="empty-state-icon">📝</div>
+          <div class="empty-state-illustration">📝</div>
           <div class="empty-state-title">No PICO Questions</div>
           <div class="empty-state-text">Define PICO questions first to begin formulating recommendations.</div>
           <button class="btn btn-primary" onclick="App.navigate('pico')">Go to PICO Questions</button>
         </div>
       `;
-            return;
-        }
+      return;
+    }
 
-        container.innerHTML = `
+    container.innerHTML = `
       <div class="content-header">
         <h1 class="content-title">Recommendations</h1>
         <p class="content-subtitle">
@@ -37,16 +37,16 @@ const RecommendationModule = (() => {
       </div>
     `;
 
-        attachEvents(container);
-    }
+    attachEvents(container);
+  }
 
-    function renderRecCard(q, idx) {
-        const rec = State.getRecommendation(q.id) || {};
-        const decision = State.getDecision(q.id);
-        const decBadge = decision?.type ?
-            `<span class="badge badge-${decision.type}">${decision.type.charAt(0).toUpperCase() + decision.type.slice(1)}</span>` : '';
+  function renderRecCard(q, idx) {
+    const rec = State.getRecommendation(q.id) || {};
+    const decision = State.getDecision(q.id);
+    const decBadge = decision?.type ?
+      `<span class="badge badge-${decision.type}">${decision.type.charAt(0).toUpperCase() + decision.type.slice(1)}</span>` : '';
 
-        return `
+    return `
       <div class="card" data-pico-id="${q.id}">
         <div class="card-header">
           <div class="flex items-center gap-3">
@@ -104,11 +104,11 @@ const RecommendationModule = (() => {
             <label class="form-label">Certainty of Evidence</label>
             <div class="scale-group" style="flex-direction:column;">
               ${[
-                { value: 'high', label: 'High', icon: '⊕⊕⊕⊕' },
-                { value: 'moderate', label: 'Moderate', icon: '⊕⊕⊕⊖' },
-                { value: 'low', label: 'Low', icon: '⊕⊕⊖⊖' },
-                { value: 'very_low', label: 'Very Low', icon: '⊕⊖⊖⊖' }
-            ].map(c => `
+        { value: 'high', label: 'High', icon: '⊕⊕⊕⊕' },
+        { value: 'moderate', label: 'Moderate', icon: '⊕⊕⊕⊖' },
+        { value: 'low', label: 'Low', icon: '⊕⊕⊖⊖' },
+        { value: 'very_low', label: 'Very Low', icon: '⊕⊖⊖⊖' }
+      ].map(c => `
                 <div class="scale-option">
                   <input type="radio" name="certainty-${q.id}" id="certainty-${q.id}-${c.value}" value="${c.value}"
                     ${rec.certainty === c.value ? 'checked' : ''} data-pico="${q.id}" data-field="certainty">
@@ -136,38 +136,38 @@ const RecommendationModule = (() => {
         </div>
       </div>
     `;
-    }
+  }
 
-    function attachEvents(container) {
-        // Auto-save radios
-        container.querySelectorAll('input[type="radio"][data-pico]').forEach(r => {
-            r.addEventListener('change', (e) => {
-                const picoId = e.target.dataset.pico;
-                const field = e.target.dataset.field;
-                const current = State.getRecommendation(picoId) || {};
-                current[field] = e.target.value;
-                State.setRecommendation(picoId, current);
-                App.updateSidebar();
-            });
-        });
+  function attachEvents(container) {
+    // Auto-save radios
+    container.querySelectorAll('input[type="radio"][data-pico]').forEach(r => {
+      r.addEventListener('change', (e) => {
+        const picoId = e.target.dataset.pico;
+        const field = e.target.dataset.field;
+        const current = State.getRecommendation(picoId) || {};
+        current[field] = e.target.value;
+        State.setRecommendation(picoId, current);
+        App.updateSidebar();
+      });
+    });
 
-        // Auto-save textareas
-        container.querySelectorAll('.rec-field').forEach(ta => {
-            ta.addEventListener('blur', (e) => {
-                const picoId = e.target.dataset.pico;
-                const field = e.target.dataset.field;
-                const current = State.getRecommendation(picoId) || {};
-                current[field] = e.target.value;
-                State.setRecommendation(picoId, current);
-                App.updateSidebar();
-            });
-        });
-    }
+    // Auto-save textareas
+    container.querySelectorAll('.rec-field').forEach(ta => {
+      ta.addEventListener('blur', (e) => {
+        const picoId = e.target.dataset.pico;
+        const field = e.target.dataset.field;
+        const current = State.getRecommendation(picoId) || {};
+        current[field] = e.target.value;
+        State.setRecommendation(picoId, current);
+        App.updateSidebar();
+      });
+    });
+  }
 
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    }
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
 
-    return { render };
+  return { render };
 })();

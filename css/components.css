@@ -1420,3 +1420,187 @@ tbody tr:last-child td {
 .onboarding-card.card-demo .onboarding-card-icon {
     background: linear-gradient(135deg, var(--color-green-50), var(--color-teal-50));
 }
+
+/* ============================================
+   RAG Knowledge Base Panel
+   ============================================ */
+
+.rag-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+.rag-search-box {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.rag-search-input {
+    flex: 1;
+    font-size: var(--font-size-sm);
+}
+
+.rag-section-title {
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.rag-context-tips {
+    background: linear-gradient(135deg, var(--color-primary-50), var(--color-teal-50));
+    border: 1px solid var(--color-primary-100);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+}
+
+[data-theme="dark"] .rag-context-tips {
+    background: linear-gradient(135deg, rgba(0, 154, 222, 0.1), rgba(0, 161, 154, 0.1));
+    border-color: rgba(0, 154, 222, 0.2);
+}
+
+.rag-tip {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    line-height: 1.5;
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--color-primary-100);
+}
+
+.rag-tip:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.rag-tip::before {
+    content: "→";
+    color: var(--color-primary-500);
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.rag-results {
+    min-height: 60px;
+}
+
+.rag-result-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    margin-bottom: var(--space-3);
+    animation: slideUp 0.3s ease both;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rag-result-card:hover {
+    border-color: var(--color-primary-300);
+    box-shadow: 0 2px 8px rgba(0, 154, 222, 0.1);
+}
+
+.rag-result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-2);
+}
+
+.rag-result-source {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--color-primary-600);
+    background: var(--color-primary-50);
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+}
+
+[data-theme="dark"] .rag-result-source {
+    background: rgba(0, 154, 222, 0.15);
+    color: var(--color-primary-300);
+}
+
+.rag-result-score {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--color-text-muted);
+}
+
+.rag-result-section {
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+}
+
+.rag-result-text {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+}
+
+.rag-result-text mark {
+    background: rgba(0, 154, 222, 0.15);
+    color: var(--color-primary-700);
+    padding: 1px 3px;
+    border-radius: 3px;
+    font-weight: 500;
+}
+
+[data-theme="dark"] .rag-result-text mark {
+    background: rgba(0, 154, 222, 0.25);
+    color: var(--color-primary-300);
+}
+
+.rag-result-keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin-top: var(--space-3);
+}
+
+.rag-keyword {
+    font-size: 11px;
+    padding: 2px 8px;
+    background: var(--color-neutral-100);
+    color: var(--color-text-muted);
+    border-radius: var(--radius-pill);
+    font-weight: 500;
+}
+
+[data-theme="dark"] .rag-keyword {
+    background: var(--color-neutral-800);
+}
+
+.rag-no-results {
+    text-align: center;
+    padding: var(--space-6);
+}
+
+.rag-source-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.rag-source-list li {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    padding: var(--space-1) 0;
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.rag-source-list li:last-child {
+    border-bottom: none;
+}
+
+.rag-sources-info {
+    opacity: 0.7;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-border-light);
+}

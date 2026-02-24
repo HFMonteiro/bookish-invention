@@ -1,0 +1,627 @@
+{
+    "metadata": {
+        "version": "1.0",
+        "description": "GRADE-ADOLOPMENT Methodology Knowledge Base",
+        "lastUpdated": "2026-02-24",
+        "sources": [
+            "Schünemann HJ et al. GRADE EtD frameworks. J Clin Epidemiol. 2017;81:101-110",
+            "WHO Handbook for Guideline Development, 2nd Edition, 2014",
+            "AGREE II Instrument, AGREE Research Trust, 2017",
+            "Darzi A et al. GRADE ADOLOPMENT. J Clin Epidemiol. 2017;81:101-110"
+        ]
+    },
+    "chunks": [
+        {
+            "id": "adolopment_001",
+            "source": "GRADE-ADOLOPMENT Overview",
+            "section": "What is ADOLOPMENT?",
+            "text": "GRADE-ADOLOPMENT is a systematic and transparent approach for the development of clinical practice guidelines that allows organizations to adopt, adapt, or develop de novo (ADOLOPMENT) recommendations. It was introduced by Schünemann and colleagues in 2017 as part of the GRADE (Grading of Recommendations, Assessment, Development and Evaluations) project. The approach addresses the inefficiency of every guideline group starting from scratch by building on existing, trustworthy guidelines.",
+            "keywords": [
+                "adolopment",
+                "grade",
+                "definition",
+                "overview",
+                "methodology",
+                "schunemann"
+            ]
+        },
+        {
+            "id": "adolopment_002",
+            "source": "GRADE-ADOLOPMENT Overview",
+            "section": "Three Strategies",
+            "text": "ADOLOPMENT offers three strategies: (1) ADOPTION — accepting a recommendation from a credible source guideline without changes, when the Evidence to Decision (EtD) judgments are identical in the new context; (2) ADAPTATION — modifying a recommendation to fit local circumstances, when some EtD domains differ (e.g., resources, values, feasibility); (3) DE NOVO development — creating a new recommendation from scratch, when no suitable source guideline exists or contextual factors differ substantially.",
+            "keywords": [
+                "adoption",
+                "adaptation",
+                "de novo",
+                "strategies",
+                "approaches",
+                "types"
+            ]
+        },
+        {
+            "id": "adolopment_003",
+            "source": "GRADE-ADOLOPMENT Overview",
+            "section": "When to Adopt",
+            "text": "A recommendation should be ADOPTED when: (a) a credible, high-quality source guideline exists that addresses the same PICO question; (b) the EtD framework assessments yield identical or very similar judgments across all 9 domains in the new context; (c) no significant differences exist in values, resources, feasibility, equity, or acceptability. Adoption is the most efficient strategy and should be considered first.",
+            "keywords": [
+                "adopt",
+                "adoption",
+                "when",
+                "criteria",
+                "same context",
+                "identical"
+            ]
+        },
+        {
+            "id": "adolopment_004",
+            "source": "GRADE-ADOLOPMENT Overview",
+            "section": "When to Adapt",
+            "text": "A recommendation should be ADAPTED when: (a) a credible source guideline exists; (b) the evidence assessments (priority, certainty, benefits/harms) are largely applicable; (c) but contextual factors differ — particularly in values and preferences, resource requirements, cost-effectiveness, health equity, acceptability, or feasibility. The adaptation should document which domains differ and how the recommendation was modified to address those differences.",
+            "keywords": [
+                "adapt",
+                "adaptation",
+                "when",
+                "criteria",
+                "contextual",
+                "modify",
+                "local context"
+            ]
+        },
+        {
+            "id": "adolopment_005",
+            "source": "GRADE-ADOLOPMENT Overview",
+            "section": "When to Develop De Novo",
+            "text": "De novo development is necessary when: (a) no credible source guideline exists that addresses the PICO question; (b) the available source guidelines are of low quality or outdated; (c) the contextual factors differ so substantially that adaptation is insufficient; (d) the topic is novel with no existing recommendations. De novo development requires a full systematic review and evidence synthesis.",
+            "keywords": [
+                "de novo",
+                "develop",
+                "new",
+                "when",
+                "criteria",
+                "no source",
+                "novel"
+            ]
+        },
+        {
+            "id": "etd_001",
+            "source": "EtD Framework Guide",
+            "section": "Overview",
+            "text": "The Evidence to Decision (EtD) framework is the core analytical tool of the GRADE approach. It structures the assessment of a recommendation across 9 domains, moving from evidence assessment to contextual considerations to the final recommendation. The framework ensures transparency and systematic consideration of all factors that should influence a clinical practice recommendation.",
+            "keywords": [
+                "etd",
+                "evidence to decision",
+                "framework",
+                "overview",
+                "nine domains",
+                "9 domains"
+            ]
+        },
+        {
+            "id": "etd_002",
+            "source": "EtD Framework Guide",
+            "section": "Domain 1: Priority of the Problem",
+            "text": "This domain assesses whether the health problem being addressed is a priority. Consider: the burden of disease (morbidity, mortality, disability), urgency, prevalence, and whether addressing it could reduce health inequities. WHO Global Health Observatory data and national disease registries are useful sources. A high-priority problem provides stronger justification for action.",
+            "keywords": [
+                "priority",
+                "problem",
+                "burden",
+                "disease",
+                "prevalence",
+                "urgency",
+                "domain 1"
+            ]
+        },
+        {
+            "id": "etd_003",
+            "source": "EtD Framework Guide",
+            "section": "Domain 2: Certainty of Evidence",
+            "text": "The certainty (quality) of evidence reflects the extent to which confidence in an estimate of effect is adequate to support a recommendation. GRADE rates certainty as High, Moderate, Low, or Very Low. Five factors can decrease certainty: risk of bias, inconsistency, indirectness, imprecision, and publication bias. Three factors can increase it: large magnitude of effect, dose-response gradient, and plausible residual confounding.",
+            "keywords": [
+                "certainty",
+                "evidence",
+                "quality",
+                "grade",
+                "high",
+                "moderate",
+                "low",
+                "very low",
+                "domain 2",
+                "risk of bias"
+            ]
+        },
+        {
+            "id": "etd_004",
+            "source": "EtD Framework Guide",
+            "section": "Domain 3: Balance of Benefits and Harms",
+            "text": "This domain weighs the desirable effects (benefits) against the undesirable effects (harms) of the intervention compared to the comparison. Consider the magnitude, importance, and certainty of both benefits and harms. If benefits clearly outweigh harms, this favors the intervention. If harms outweigh benefits, this favors the comparison. The balance should account for patient-important outcomes weighted by their relative importance.",
+            "keywords": [
+                "benefits",
+                "harms",
+                "balance",
+                "desirable",
+                "undesirable",
+                "effects",
+                "domain 3",
+                "magnitude"
+            ]
+        },
+        {
+            "id": "etd_005",
+            "source": "EtD Framework Guide",
+            "section": "Domain 4: Values and Preferences",
+            "text": "This domain considers how much patients or the population value the main outcomes, and whether there is important variability in these values. If there is significant uncertainty or variability in how people value the critical outcomes, the recommendation should be conditional rather than strong. Values may differ by culture, religion, socioeconomic status, age, or individual circumstances. Patient engagement studies and qualitative research inform this domain.",
+            "keywords": [
+                "values",
+                "preferences",
+                "variability",
+                "uncertainty",
+                "patients",
+                "domain 4",
+                "how much"
+            ]
+        },
+        {
+            "id": "etd_006",
+            "source": "EtD Framework Guide",
+            "section": "Domain 5: Resource Requirements",
+            "text": "This domain evaluates the costs and resource utilization associated with the intervention. Consider direct costs (equipment, medications, personnel), indirect costs (training, infrastructure), and opportunity costs. Resources should be assessed from the perspective relevant to the recommendation (health system, societal, or patient). In low-resource settings, even modest costs can be a significant barrier.",
+            "keywords": [
+                "resources",
+                "costs",
+                "resource requirements",
+                "budget",
+                "personnel",
+                "infrastructure",
+                "domain 5"
+            ]
+        },
+        {
+            "id": "etd_007",
+            "source": "EtD Framework Guide",
+            "section": "Domain 6: Cost-Effectiveness",
+            "text": "Cost-effectiveness considers whether the incremental benefits of the intervention justify the incremental costs, compared to the comparison. Consider incremental cost-effectiveness ratios (ICERs), willingness-to-pay thresholds, and how cost-effectiveness varies by setting. Economic evaluations, budget impact analyses, and cost-utility studies are key evidence sources. Results may differ substantially between high-income and low-income settings.",
+            "keywords": [
+                "cost-effectiveness",
+                "icer",
+                "cost-utility",
+                "economic",
+                "willingness-to-pay",
+                "domain 6"
+            ]
+        },
+        {
+            "id": "etd_008",
+            "source": "EtD Framework Guide",
+            "section": "Domain 7: Health Equity",
+            "text": "This domain assesses the expected impact on health equity. Would the intervention increase or decrease disparities between population groups? Consider access for disadvantaged populations, geographic disparities, gender and age considerations, and implications for human rights. Interventions that reduce health inequities strengthen the case for a recommendation. The WHO-INTEGRATE framework provides additional guidance on equity considerations.",
+            "keywords": [
+                "equity",
+                "health equity",
+                "disparities",
+                "inequities",
+                "disadvantaged",
+                "access",
+                "domain 7"
+            ]
+        },
+        {
+            "id": "etd_009",
+            "source": "EtD Framework Guide",
+            "section": "Domain 8: Acceptability",
+            "text": "Acceptability assesses whether the intervention is acceptable to key stakeholders: patients, healthcare providers, policymakers, and the public. Consider cultural norms, religious beliefs, ethical considerations, legal frameworks, and potential for stigma. An intervention that is not acceptable to patients may have low adherence; one not acceptable to providers may not be prescribed. Qualitative studies, surveys, and stakeholder consultations inform this domain.",
+            "keywords": [
+                "acceptability",
+                "stakeholders",
+                "cultural",
+                "ethical",
+                "adherence",
+                "domain 8"
+            ]
+        },
+        {
+            "id": "etd_010",
+            "source": "EtD Framework Guide",
+            "section": "Domain 9: Feasibility",
+            "text": "Feasibility evaluates whether the intervention can realistically be implemented in the target setting. Consider: health system infrastructure, workforce capacity, supply chain reliability, regulatory environment, training requirements, and long-term sustainability. Even a highly effective intervention is of limited value if it cannot be feasibly delivered. Implementation science frameworks (e.g., RE-AIM, CFIR) can help assess feasibility systematically.",
+            "keywords": [
+                "feasibility",
+                "implementation",
+                "infrastructure",
+                "workforce",
+                "supply chain",
+                "domain 9"
+            ]
+        },
+        {
+            "id": "agree_001",
+            "source": "AGREE II Assessment",
+            "section": "Overview",
+            "text": "The AGREE II Instrument (Appraisal of Guidelines for Research and Evaluation) is an internationally recognized tool for assessing the quality of clinical practice guidelines. It evaluates guidelines across 6 domains with 23 items, each scored from 1 (Strongly Disagree) to 7 (Strongly Agree). AGREE II is essential in the ADOLOPMENT process for determining which source guidelines are trustworthy enough to serve as a basis for adoption or adaptation.",
+            "keywords": [
+                "agree",
+                "agree ii",
+                "quality",
+                "assessment",
+                "appraisal",
+                "guideline quality"
+            ]
+        },
+        {
+            "id": "agree_002",
+            "source": "AGREE II Assessment",
+            "section": "Domain 1: Scope and Purpose",
+            "text": "This AGREE II domain evaluates whether the overall objective, health questions, and target population of the guideline are specifically described. High-quality guidelines clearly define: the clinical condition being addressed, the target population, the specific health questions in PICO format, and the intended users. This domain ensures the guideline has a clear, well-defined purpose.",
+            "keywords": [
+                "scope",
+                "purpose",
+                "objective",
+                "target population",
+                "agree domain 1"
+            ]
+        },
+        {
+            "id": "agree_003",
+            "source": "AGREE II Assessment",
+            "section": "Domain 2: Stakeholder Involvement",
+            "text": "This domain assesses whether the guideline development group included individuals from all relevant professional groups, whether the views and preferences of the target population were sought, and whether the target users of the guideline are clearly defined. Multidisciplinary representation, including patients and public, increases the guideline's credibility and applicability.",
+            "keywords": [
+                "stakeholder",
+                "involvement",
+                "multidisciplinary",
+                "patients",
+                "public",
+                "agree domain 2"
+            ]
+        },
+        {
+            "id": "agree_004",
+            "source": "AGREE II Assessment",
+            "section": "Domain 3: Rigour of Development",
+            "text": "This domain evaluates the methodological rigor: Were systematic methods used to search for evidence? Was the evidence quality assessed? Were the methods for formulating recommendations clearly described? Is there an explicit link between evidence and recommendations? Was the guideline externally reviewed? This is the most critical AGREE II domain and typically carries the most weight in quality assessment.",
+            "keywords": [
+                "rigour",
+                "rigor",
+                "development",
+                "systematic",
+                "evidence",
+                "methodology",
+                "agree domain 3"
+            ]
+        },
+        {
+            "id": "agree_005",
+            "source": "AGREE II Assessment",
+            "section": "Domain 4: Clarity of Presentation",
+            "text": "This domain assesses whether the recommendations are specific, unambiguous, and clearly presented. Key considerations: Are the different management options clearly described? Are key recommendations easily identifiable? Recommendations should use clear, actionable language, specify the population, intervention, and circumstances. Consider using recommendation boxes or summary tables.",
+            "keywords": [
+                "clarity",
+                "presentation",
+                "specific",
+                "unambiguous",
+                "identifiable",
+                "agree domain 4"
+            ]
+        },
+        {
+            "id": "agree_006",
+            "source": "AGREE II Assessment",
+            "section": "Domain 5: Applicability",
+            "text": "This domain considers whether the guideline discusses facilitators and barriers to its application, provides tools for practical implementation, has considered resource implications, and defines auditing criteria. Guidelines that score well here include implementation checklists, algorithms, patient decision aids, and cost information.",
+            "keywords": [
+                "applicability",
+                "implementation",
+                "barriers",
+                "facilitators",
+                "tools",
+                "agree domain 5"
+            ]
+        },
+        {
+            "id": "agree_007",
+            "source": "AGREE II Assessment",
+            "section": "Domain 6: Editorial Independence",
+            "text": "This domain verifies that the guideline views are not unduly biased by competing interests. Were funding sources declared? Were conflicts of interest of all guideline development group members identified and managed? Editorial independence is critical for the credibility and trustworthiness of guideline recommendations.",
+            "keywords": [
+                "editorial",
+                "independence",
+                "competing interests",
+                "conflicts",
+                "funding",
+                "bias",
+                "agree domain 6"
+            ]
+        },
+        {
+            "id": "rec_001",
+            "source": "Recommendation Formulation",
+            "section": "Strength of Recommendations",
+            "text": "GRADE classifies recommendation strength as either Strong or Conditional (also called Weak). A STRONG recommendation means the guideline panel is confident that the desirable effects outweigh undesirable effects (or vice versa) and that almost all informed patients would want the recommended course of action. A CONDITIONAL recommendation means there is less certainty, and the decision might depend on individual patient circumstances, values, or preferences.",
+            "keywords": [
+                "strength",
+                "strong",
+                "conditional",
+                "weak",
+                "recommendation",
+                "confidence"
+            ]
+        },
+        {
+            "id": "rec_002",
+            "source": "Recommendation Formulation",
+            "section": "Direction of Recommendations",
+            "text": "Recommendations can be FOR or AGAINST an intervention, yielding four possible types: Strong FOR (do it), Conditional FOR (probably do it), Conditional AGAINST (probably don't do it), Strong AGAINST (don't do it). The direction is determined primarily by the balance of benefits and harms, while the strength is influenced by the certainty of evidence, values, and resource implications.",
+            "keywords": [
+                "direction",
+                "for",
+                "against",
+                "four types",
+                "strong for",
+                "conditional for"
+            ]
+        },
+        {
+            "id": "rec_003",
+            "source": "Recommendation Formulation",
+            "section": "Certainty of Evidence Levels",
+            "text": "GRADE defines four levels of certainty: HIGH (⊕⊕⊕⊕) — further research is very unlikely to change confidence in the estimate; MODERATE (⊕⊕⊕⊖) — further research is likely to have an important impact and may change the estimate; LOW (⊕⊕⊖⊖) — further research is very likely to change the estimate; VERY LOW (⊕⊖⊖⊖) — any estimate of effect is very uncertain. The certainty rating should reflect the overall body of evidence for the recommendation.",
+            "keywords": [
+                "certainty levels",
+                "high",
+                "moderate",
+                "low",
+                "very low",
+                "evidence quality",
+                "grade levels"
+            ]
+        },
+        {
+            "id": "rec_004",
+            "source": "Recommendation Formulation",
+            "section": "Formulating the Text",
+            "text": "Recommendation statements should: (1) Use clear, standardized wording — 'We recommend...' for strong, 'We suggest...' for conditional; (2) Specify the population, intervention, and comparison; (3) Include the strength and certainty of evidence in parentheses; (4) Be actionable — avoid vague language. Example: 'We recommend HPV testing rather than cytology for primary cervical cancer screening in women aged 30-65 (strong recommendation, moderate certainty evidence).'",
+            "keywords": [
+                "formulation",
+                "wording",
+                "text",
+                "statement",
+                "recommend",
+                "suggest",
+                "writing"
+            ]
+        },
+        {
+            "id": "pico_001",
+            "source": "PICO Framework",
+            "section": "Building PICO Questions",
+            "text": "The PICO framework structures clinical questions into four components: Population (who is the question about?), Intervention (what is being considered?), Comparison (what is the alternative?), and Outcome (what are the relevant effects?). Well-defined PICO questions are essential because they guide the evidence search, structure the EtD assessment, and determine the scope of each recommendation.",
+            "keywords": [
+                "pico",
+                "population",
+                "intervention",
+                "comparison",
+                "outcome",
+                "clinical question"
+            ]
+        },
+        {
+            "id": "pico_002",
+            "source": "PICO Framework",
+            "section": "Prioritizing Questions",
+            "text": "Not all PICO questions are equally important. GRADE distinguishes between CRITICAL and IMPORTANT outcomes. Questions addressing critical outcomes (those essential for decision-making) should be prioritized. The guideline panel should rate each question's priority and consider whether existing recommendations adequately address it. Priority rating helps allocate resources efficiently in the ADOLOPMENT process.",
+            "keywords": [
+                "priority",
+                "prioritizing",
+                "critical",
+                "important",
+                "outcomes",
+                "rating"
+            ]
+        },
+        {
+            "id": "source_001",
+            "source": "Source Guideline Selection",
+            "section": "Identifying Source Guidelines",
+            "text": "Source guidelines are existing clinical practice guidelines that address similar PICO questions and may serve as a basis for adoption or adaptation. To identify suitable sources: search major guideline databases (GIN, NICE, WHO, UpToDate), check for national guidelines in the target region, consider international guidelines with broad applicability. The ADOLOPMENT process can use multiple source guidelines for different PICO questions.",
+            "keywords": [
+                "source",
+                "guideline",
+                "identify",
+                "search",
+                "databases",
+                "gin",
+                "nice",
+                "who"
+            ]
+        },
+        {
+            "id": "source_002",
+            "source": "Source Guideline Selection",
+            "section": "Assessing Trustworthiness",
+            "text": "Before using a source guideline, assess its trustworthiness using AGREE II or a similar tool. Key considerations: (1) Was a systematic review conducted? (2) Were GRADE or equivalent methods used? (3) Is the guideline current (updated within 3-5 years)? (4) Was the development free from commercial conflicts of interest? Guidelines rated as high trustworthiness are candidates for adoption; moderate trustworthiness for adaptation; low trustworthiness should generally not be used as sources.",
+            "keywords": [
+                "trustworthiness",
+                "assess",
+                "agree",
+                "quality",
+                "systematic review",
+                "current"
+            ]
+        },
+        {
+            "id": "workflow_001",
+            "source": "ADOLOPMENT Workflow",
+            "section": "Step-by-Step Process",
+            "text": "The ADOLOPMENT workflow follows 6 main steps: (1) Define project scope, target population, and stakeholders; (2) Formulate and prioritize PICO questions; (3) Identify and evaluate source guidelines using AGREE II; (4) Complete the EtD framework for each PICO question, comparing local context with source guideline judgments; (5) Make adopt/adapt/de novo decision for each question based on EtD comparison; (6) Formulate final recommendations with strength, direction, certainty, and implementation considerations.",
+            "keywords": [
+                "workflow",
+                "steps",
+                "process",
+                "six steps",
+                "procedure",
+                "how to"
+            ]
+        },
+        {
+            "id": "workflow_002",
+            "source": "ADOLOPMENT Workflow",
+            "section": "Context Assessment",
+            "text": "The key to the ADOLOPMENT decision is comparing the source guideline's context with the target context. For each EtD domain, ask: Does the judgment differ? The first 3 domains (priority, certainty, benefits/harms) are typically universal. The last 6 contextual domains (values, resources, cost-effectiveness, equity, acceptability, feasibility) are more likely to differ between settings. If only contextual domains differ, adaptation is usually sufficient. If evidence domains also differ, de novo development may be needed.",
+            "keywords": [
+                "context",
+                "comparison",
+                "contextual",
+                "domains",
+                "differ",
+                "universal",
+                "local"
+            ]
+        },
+        {
+            "id": "who_001",
+            "source": "WHO Handbook",
+            "section": "WHO Guideline Development Process",
+            "text": "The WHO Handbook for Guideline Development (2014) provides the institutional framework for developing WHO recommendations. It mandates the use of GRADE methodology, systematic reviews, and the EtD framework. WHO guidelines must address: equity, gender, and human rights implications. The ADOLOPMENT approach was developed partly to help WHO Member States efficiently adapt WHO guidelines to their national contexts.",
+            "keywords": [
+                "who",
+                "handbook",
+                "guideline development",
+                "institutional",
+                "member states"
+            ]
+        },
+        {
+            "id": "who_002",
+            "source": "WHO Handbook",
+            "section": "Guideline Development Group",
+            "text": "A Guideline Development Group (GDG) is the panel of experts responsible for developing recommendations. The GDG should include: clinical experts, methodologists, patient representatives, public health specialists, and implementation experts. Members must declare conflicts of interest. The GDG deliberates on the EtD framework judgments and makes the final recommendation through a consensus or voting process.",
+            "keywords": [
+                "gdg",
+                "guideline development group",
+                "panel",
+                "experts",
+                "composition",
+                "consensus"
+            ]
+        },
+        {
+            "id": "tips_001",
+            "source": "Practical Tips",
+            "section": "Getting Started",
+            "text": "Tips for starting a GRADE-ADOLOPMENT project: (1) Begin with a clear scope — don't try to address too many questions; (2) Identify 1-3 high-quality source guidelines before starting; (3) Prioritize your PICO questions — focus on critical outcomes first; (4) Assemble a diverse guideline development group; (5) Plan for dissemination and implementation from the start; (6) Budget adequate time — even with ADOLOPMENT, the process typically takes 6-12 months.",
+            "keywords": [
+                "tips",
+                "getting started",
+                "practical",
+                "advice",
+                "start",
+                "beginning"
+            ]
+        },
+        {
+            "id": "tips_002",
+            "source": "Practical Tips",
+            "section": "Common Pitfalls",
+            "text": "Common pitfalls in ADOLOPMENT: (1) Adopting recommendations from low-quality source guidelines without proper assessment; (2) Ignoring contextual factors — especially values, resources, and feasibility; (3) Not documenting the rationale for adopt/adapt/de novo decisions; (4) Failing to engage stakeholders; (5) Not updating the guideline when source guidelines are revised; (6) Over-adapting — making unnecessary changes to well-supported recommendations.",
+            "keywords": [
+                "pitfalls",
+                "common mistakes",
+                "errors",
+                "avoid",
+                "problems",
+                "issues"
+            ]
+        },
+        {
+            "id": "tips_003",
+            "source": "Practical Tips",
+            "section": "Quality Assurance",
+            "text": "Quality assurance for ADOLOPMENT guidelines: (1) Ensure all AGREE II assessments are completed by at least two independent reviewers; (2) Document all EtD judgments with supporting evidence; (3) Have the final recommendations externally reviewed; (4) Use the GRADE evidence profiles for every recommendation; (5) Plan for a 3-5 year update cycle; (6) Make the guideline publicly available with transparent methodology reporting.",
+            "keywords": [
+                "quality",
+                "assurance",
+                "review",
+                "transparency",
+                "update",
+                "reporting"
+            ]
+        },
+        {
+            "id": "context_001",
+            "source": "Contextual Adaptation",
+            "section": "Resource Considerations",
+            "text": "When adapting for different resource settings, consider: (1) Direct medical costs relative to per-capita health expenditure; (2) Availability of required equipment and supplies; (3) Workforce requirements — are trained personnel available? (4) Infrastructure needs — laboratory capacity, cold chain, referral pathways; (5) Opportunity costs — what else could be funded? (6) Financial protection — will the intervention cause catastrophic health expenditures for patients? These factors often determine whether adoption or adaptation is appropriate.",
+            "keywords": [
+                "resources",
+                "low-resource",
+                "costs",
+                "infrastructure",
+                "workforce",
+                "adaptation",
+                "setting"
+            ]
+        },
+        {
+            "id": "context_002",
+            "source": "Contextual Adaptation",
+            "section": "Cultural and Value Differences",
+            "text": "Cultural and value differences between settings may affect: (1) Patient preferences for shared decision-making vs. paternalistic care; (2) Attitudes toward specific interventions (e.g., vaccination, screening); (3) Religious or cultural beliefs affecting treatment choices; (4) Gender norms influencing healthcare access; (5) Community vs. individual decision-making. When values differ significantly between settings, adaptation of recommendations is warranted, particularly for conditional recommendations where patient preferences play a larger role.",
+            "keywords": [
+                "cultural",
+                "values",
+                "preferences",
+                "beliefs",
+                "gender",
+                "religion",
+                "differences"
+            ]
+        },
+        {
+            "id": "integrate_001",
+            "source": "WHO-INTEGRATE Framework",
+            "section": "Additional Criteria",
+            "text": "The WHO-INTEGRATE framework extends the EtD by adding criteria relevant to complex interventions and public health: (1) Balance of health benefits and harms; (2) Human rights and sociocultural acceptability; (3) Health equity, equality and non-discrimination; (4) Societal implications including social, environmental, and economic considerations; (5) Financial and economic considerations; (6) Feasibility and health system considerations. These criteria are particularly relevant when adapting WHO guidelines for national implementation.",
+            "keywords": [
+                "who-integrate",
+                "integrate",
+                "framework",
+                "complex",
+                "public health",
+                "human rights",
+                "societal"
+            ]
+        }
+    ],
+    "contextTips": {
+        "project": [
+            "Start with a clear scope — don't try to cover too many clinical questions at once.",
+            "Define your target population precisely. The recommendation applies to them.",
+            "Assemble a diverse guideline development group including clinicians, methodologists, and patient representatives."
+        ],
+        "pico": [
+            "Each PICO question should address one focused clinical decision.",
+            "Rate questions as Critical (essential for recommendation) or Important (informative but not decisive).",
+            "Focus on patient-important outcomes, not surrogate endpoints."
+        ],
+        "sources": [
+            "Search major guideline databases: GIN Library, NICE, WHO, PubMed.",
+            "Rate trustworthiness using AGREE II — score each domain from 1-7.",
+            "Guidelines rated ≥5.5/7 average are candidates for adoption; 3.5-5.5 for adaptation."
+        ],
+        "etd": [
+            "The first 3 domains (Priority, Certainty, Benefits) typically apply universally.",
+            "The last 6 contextual domains are most likely to differ between settings.",
+            "Document your rationale for each judgment — transparency is key."
+        ],
+        "decision": [
+            "If all 9 EtD domains match the source → consider ADOPTION.",
+            "If only contextual domains differ → consider ADAPTATION.",
+            "If evidence domains differ or no source exists → DE NOVO development."
+        ],
+        "recommendation": [
+            "Use 'We recommend...' for strong, 'We suggest...' for conditional recommendations.",
+            "Always state the certainty of evidence in parentheses.",
+            "Include implementation considerations and research gaps."
+        ]
+    }
+}
