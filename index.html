@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="GRADE-ADOLOPMENT Guideline Development App — Adopt, Adapt, or Develop De Novo trustworthy clinical practice guidelines using the WHO Evidence to Decision framework.">
+  <title>GRADE-ADOLOPMENT — Guideline Development</title>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+</head>
+
+<body>
+
+  <div class="app-container">
+
+    <!-- ========== Sidebar ========== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand-icon animate-gradient"
+            style="background:linear-gradient(135deg, #009ADE, #00A19A, #009ADE); background-size:200% 200%;">
+            G
+          </div>
+          <div class="sidebar-brand-text">
+            <div class="sidebar-brand-name">GRADE-ADOLOPMENT</div>
+            <div class="sidebar-brand-sub">Guideline Development</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="sidebar-nav" id="sidebar-nav">
+        <!-- Populated by app.js -->
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div class="sidebar-progress">
+          <div class="sidebar-progress-label">
+            <span>Progress</span>
+            <span id="progress-pct">0%</span>
+          </div>
+          <div class="sidebar-progress-bar">
+            <div class="sidebar-progress-fill" id="progress-fill" style="width:0%;"></div>
+          </div>
+        </div>
+        <div id="sidebar-project-name" class="text-sm text-muted"
+          style="margin-top:var(--space-2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+          No project
+        </div>
+      </div>
+    </aside>
+
+    <!-- ========== Main Area ========== -->
+    <main class="main-area">
+
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="btn btn-ghost btn-icon" id="btn-menu" style="display:none;"
+            onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+          <div>
+            <div id="topbar-title" class="topbar-title">Dashboard</div>
+            <div id="topbar-breadcrumb" class="topbar-breadcrumb">GRADE-ADOLOPMENT</div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <!-- Auto-save indicator (#3) -->
+          <div class="autosave-indicator">
+            <div class="autosave-dot" id="autosave-dot"></div>
+            <span id="autosave-time">Saved</span>
+          </div>
+          <!-- Help button (#14) -->
+          <button class="btn btn-ghost btn-sm" onclick="App.toggleHelpPanel()" title="Help (?)">❓ Help</button>
+          <!-- Dark mode toggle (#2) -->
+          <button class="theme-toggle" id="btn-theme" onclick="App.toggleTheme()" title="Toggle dark mode">🌙</button>
+          <!-- Export -->
+          <button class="btn btn-ghost btn-sm" onclick="App.navigate('export')" title="Export">📤 Export</button>
+          <!-- Save -->
+          <button class="btn btn-ghost btn-sm" id="btn-save-now" title="Save project data (Ctrl+S)">💾 Save</button>
+        </div>
+      </header>
+
+      <!-- Pipeline Stepper (#1) -->
+      <div class="pipeline" id="pipeline" style="display:none;">
+        <!-- Populated by app.js -->
+      </div>
+
+      <!-- Content -->
+      <div id="main-content">
+        <!-- Populated by modules -->
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- Help Panel (#14) -->
+  <div class="help-panel" id="help-panel">
+    <div class="help-panel-header">
+      <div class="help-panel-title">📖 Methodology Guide</div>
+      <button class="modal-close" onclick="App.toggleHelpPanel()">&times;</button>
+    </div>
+    <div class="help-panel-body" id="help-panel-body">
+      <!-- Populated by app.js on init -->
+    </div>
+  </div>
+
+  <!-- Modal Overlay -->
+  <div class="modal-overlay" id="modal-overlay"></div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Scripts (order matters: state first, then modules, then app) -->
+  <script src="js/state.js"></script>
+  <script src="js/project.js"></script>
+  <script src="js/pico.js"></script>
+  <script src="js/source-eval.js"></script>
+  <script src="js/etd-framework.js"></script>
+  <script src="js/decision-engine.js"></script>
+  <script src="js/recommendation.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    // Save button
+    document.getElementById('btn-save-now')?.addEventListener('click', () => {
+      State.save();
+      App.showToast('Project saved!', 'success');
+    });
+
+    // Populate help panel
+    document.getElementById('help-panel-body').innerHTML = App.toggleHelpPanel ? '' : '';
+
+    // Responsive menu button
+    function checkMobile() {
+      const btn = document.getElementById('btn-menu');
+      if (btn) btn.style.display = window.innerWidth <= 768 ? 'flex' : 'none';
+    }
+    window.addEventListener('resize', checkMobile);
+    checkMobile();
+  </script>
+
+</body>
+
+</html>

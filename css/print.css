@@ -1,0 +1,73 @@
+/* ============================================
+   Print Styles (#18)
+   ============================================ */
+@media print {
+
+    .sidebar,
+    .topbar,
+    .pipeline,
+    .help-panel,
+    .toast-container,
+    .modal-overlay,
+    .btn,
+    .nav-item,
+    .theme-toggle,
+    .autosave-indicator {
+        display: none !important;
+    }
+
+    .app-container {
+        display: block;
+    }
+
+    .main-area {
+        margin-left: 0 !important;
+    }
+
+    .content {
+        padding: 0;
+        max-width: 100%;
+    }
+
+    body {
+        background: white;
+        color: #1E293B;
+        font-size: 12pt;
+    }
+
+    .card {
+        box-shadow: none;
+        border: 1px solid #E2E8F0;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .content-title {
+        color: #009ADE;
+        border-bottom: 2px solid #009ADE;
+        padding-bottom: 0.5rem;
+    }
+
+    table {
+        font-size: 10pt;
+    }
+
+    .badge {
+        border: 1px solid currentColor;
+    }
+
+    a {
+        color: #009ADE;
+        text-decoration: underline;
+    }
+
+    a::after {
+        content: " (" attr(href) ")";
+        font-size: 8pt;
+        color: #64748B;
+    }
+
+    @page {
+        margin: 2cm;
+    }
+}

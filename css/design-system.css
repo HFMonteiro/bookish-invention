@@ -1,0 +1,296 @@
+/* ============================================
+   GRADE-ADOLOPMENT Design System
+   WHO-Inspired Color Palette & Tokens
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* ---- Color Palette (WHO-inspired) ---- */
+  --color-primary-50: #e6f4fb;
+  --color-primary-100: #b3ddf3;
+  --color-primary-200: #80c6eb;
+  --color-primary-300: #4dafe3;
+  --color-primary-400: #1a98db;
+  --color-primary-500: #009ADE;
+  /* WHO Blue */
+  --color-primary-600: #007bb2;
+  --color-primary-700: #005c85;
+  --color-primary-800: #003d59;
+  --color-primary-900: #001f2c;
+
+  --color-teal-50: #e6f7f5;
+  --color-teal-100: #b3e8e2;
+  --color-teal-300: #4dcec0;
+  --color-teal-500: #00A19A;
+  --color-teal-700: #006b66;
+
+  --color-amber-50: #fff8e6;
+  --color-amber-100: #ffebb3;
+  --color-amber-300: #ffd14d;
+  --color-amber-500: #F5A623;
+  --color-amber-700: #c47d0a;
+
+  --color-green-50: #e8f5e9;
+  --color-green-100: #c8e6c9;
+  --color-green-300: #81c784;
+  --color-green-500: #4CAF50;
+  --color-green-700: #388E3C;
+
+  --color-red-50: #fce8e8;
+  --color-red-100: #f5c6c6;
+  --color-red-300: #e57373;
+  --color-red-500: #E53935;
+  --color-red-700: #C62828;
+
+  --color-neutral-0: #FFFFFF;
+  --color-neutral-50: #F8FAFC;
+  --color-neutral-100: #F1F5F9;
+  --color-neutral-200: #E2E8F0;
+  --color-neutral-300: #CBD5E1;
+  --color-neutral-400: #94A3B8;
+  --color-neutral-500: #64748B;
+  --color-neutral-600: #475569;
+  --color-neutral-700: #334155;
+  --color-neutral-800: #1E293B;
+  --color-neutral-900: #0F172A;
+
+  /* ---- Semantic Colors ---- */
+  --color-bg: var(--color-neutral-50);
+  --color-surface: var(--color-neutral-0);
+  --color-surface-alt: var(--color-neutral-100);
+  --color-border: var(--color-neutral-200);
+  --color-text: var(--color-neutral-800);
+  --color-text-muted: var(--color-neutral-500);
+  --color-text-light: var(--color-neutral-400);
+  --color-accent: var(--color-primary-500);
+  --color-accent-hover: var(--color-primary-600);
+
+  --color-adopt: var(--color-green-500);
+  --color-adapt: var(--color-amber-500);
+  --color-denovo: var(--color-primary-500);
+
+  --color-strong: var(--color-green-700);
+  --color-conditional: var(--color-amber-700);
+  --color-against: var(--color-red-700);
+
+  /* ---- Typography ---- */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-size-xs: 0.75rem;
+  /* 12px */
+  --font-size-sm: 0.8125rem;
+  /* 13px */
+  --font-size-base: 0.9375rem;
+  /* 15px */
+  --font-size-md: 1rem;
+  /* 16px */
+  --font-size-lg: 1.125rem;
+  /* 18px */
+  --font-size-xl: 1.25rem;
+  /* 20px */
+  --font-size-2xl: 1.5rem;
+  /* 24px */
+  --font-size-3xl: 1.875rem;
+  /* 30px */
+  --font-size-4xl: 2.25rem;
+  /* 36px */
+
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* ---- Spacing ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  /* ---- Borders ---- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-pill: 100px;
+  --radius-full: 50%;
+
+  --border-width: 1px;
+  --border: var(--border-width) solid var(--color-border);
+
+  /* ---- Shadows ---- */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.06), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.10), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+  --shadow-glow: 0 0 20px rgba(0, 154, 222, 0.15);
+
+  /* ---- Transitions ---- */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 400ms ease;
+  --transition-spring: 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ---- Z-index ---- */
+  --z-base: 1;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+
+  /* ---- Layout ---- */
+  --sidebar-width: 280px;
+  --sidebar-collapsed: 64px;
+  --topbar-height: 64px;
+  --content-max-width: 960px;
+}
+
+/* ---- Dark Mode ---- */
+[data-theme="dark"] {
+  --color-bg: #0B1120;
+  --color-surface: #141B2D;
+  --color-surface-alt: #1A2234;
+  --color-border: #2A3548;
+  --color-text: #E2E8F0;
+  --color-text-muted: #8896AA;
+  --color-text-light: #64748B;
+  --color-neutral-0: #141B2D;
+  --color-neutral-50: #1A2234;
+  --color-neutral-100: #1E293B;
+  --color-neutral-200: #2A3548;
+  --color-neutral-900: #0B1120;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .sidebar {
+  background: #0A0F1C;
+}
+
+[data-theme="dark"] .topbar {
+  background: rgba(20, 27, 45, 0.9);
+}
+
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6 {
+  color: #E2E8F0;
+}
+
+/* ---- Base Reset ---- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+  color: var(--color-text);
+  background: var(--color-bg);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ---- Typography Utilities ---- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-neutral-900);
+}
+
+h1 {
+  font-size: var(--font-size-3xl);
+}
+
+h2 {
+  font-size: var(--font-size-2xl);
+}
+
+h3 {
+  font-size: var(--font-size-xl);
+}
+
+h4 {
+  font-size: var(--font-size-lg);
+}
+
+h5 {
+  font-size: var(--font-size-md);
+}
+
+h6 {
+  font-size: var(--font-size-base);
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+/* ---- Scrollbar Styling ---- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-neutral-300);
+  border-radius: var(--radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neutral-400);
+}
+
+/* ---- Selection ---- */
+::selection {
+  background: var(--color-primary-100);
+  color: var(--color-primary-800);
+}

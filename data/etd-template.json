@@ -1,0 +1,185 @@
+{
+  "domains": [
+    {
+      "id": "priority",
+      "number": 1,
+      "title": "Priority of the Problem",
+      "description": "Is the problem a priority? Consider the burden of disease, urgency, and whether addressing it would reduce health inequities.",
+      "guidance": "Consider: disease burden (morbidity, mortality, disability), urgency of the problem, and existing gaps in care. Reference WHO Global Health Observatory data when available.",
+      "scale": [
+        { "value": "not_priority", "label": "Not a priority" },
+        { "value": "low", "label": "Low priority" },
+        { "value": "possibly", "label": "Possibly a priority" },
+        { "value": "probably", "label": "Probably a priority" },
+        { "value": "high", "label": "A priority" },
+        { "value": "very_high", "label": "Very high priority" }
+      ],
+      "fields": [
+        { "id": "judgment", "type": "scale", "label": "Judgment" },
+        { "id": "justification", "type": "textarea", "label": "Justification", "placeholder": "Explain the rationale for your judgment..." },
+        { "id": "evidence", "type": "textarea", "label": "Research Evidence", "placeholder": "Summarize relevant evidence on the priority of this problem..." }
+      ]
+    },
+    {
+      "id": "certainty",
+      "number": 2,
+      "title": "Certainty of Evidence",
+      "description": "What is the overall certainty of the evidence of effects? Assessed using GRADE criteria: risk of bias, inconsistency, indirectness, imprecision, and publication bias.",
+      "guidance": "Rate using GRADE levels. Consider all critical outcomes. Downgrade for: risk of bias, inconsistency, indirectness, imprecision, publication bias. Upgrade for: large effect, dose-response, plausible confounding.",
+      "scale": [
+        { "value": "very_low", "label": "Very low", "color": "#c62828" },
+        { "value": "low", "label": "Low", "color": "#e65100" },
+        { "value": "moderate", "label": "Moderate", "color": "#f57f17" },
+        { "value": "high", "label": "High", "color": "#2e7d32" }
+      ],
+      "fields": [
+        { "id": "judgment", "type": "scale", "label": "Overall Certainty" },
+        { "id": "justification", "type": "textarea", "label": "Justification", "placeholder": "Explain key factors influencing the certainty rating..." },
+        { "id": "evidence", "type": "textarea", "label": "Summary of Findings", "placeholder": "Reference Summary of Findings (SoF) table if available..." }
+      ]
+    },
+    {
+      "id": "benefits_harms",
+      "number": 3,
+      "title": "Balance of Benefits and Harms",
+      "description": "Does the balance between desirable and undesirable effects favor the intervention or the comparison?",
+      "guidance": "Consider the magnitude and importance of both desirable effects (benefits) and undesirable effects (harms). Weigh these against each other considering the certainty of each.",
+      "scale": [
+        { "value": "favors_comparison", "label": "Favors comparison" },
+        { "value": "probably_favors_comparison", "label": "Probably favors comparison" },
+        { "value": "no_difference", "label": "Does not favor either" },
+        { "value": "probably_favors_intervention", "label": "Probably favors intervention" },
+        { "value": "favors_intervention", "label": "Favors intervention" },
+        { "value": "varies", "label": "Varies" },
+        { "value": "dont_know", "label": "Don't know" }
+      ],
+      "fields": [
+        { "id": "judgment", "type": "scale", "label": "Judgment" },
+        { "id": "benefits", "type": "textarea", "label": "Desirable Effects", "placeholder": "Describe anticipated benefits..." },
+        { "id": "harms", "type": "textarea", "label": "Undesirable Effects", "placeholder": "Describe anticipated harms and adverse effects..." },
+        { "id": "justification", "type": "textarea", "label": "Justification", "placeholder": "Explain the overall balance..." }
+      ]
+    },
+    {
+      "id": "values",
+      "number": 4,
+      "title": "Values and Preferences",
+      "description": "Is there important uncertainty about or variability in how much people value the main outcomes?",
+      "guidance": "Consider whether patients/populations have consistent values regarding the outcomes, or whether there is significant variability. Values may differ by culture, socioeconomic status, or individual circumstances.",
+      "scale": [
+        { "value": "important_uncertainty", "label": "Important uncertainty or variability" },
+        { "value": "possibly_important", "label": "Possibly important uncertainty or variability" },
+        { "value": "probably_no", "label": "Probably no important uncertainty or variability" },
+        { "value": "no_uncertainty", "label": "No significant uncertainty or variability" }
+      ],
+      "fields": [
+        { "id": "judgment", "type": "scale", "label": "Judgment" },
+        { "id": "justification", "type": "textarea", "label": "Justification", "placeholder": "Describe evidence on patient/population values and preferences..." },
+        { "id": "evidence", "type": "textarea", "label": "Research Evidence", "placeholder": "Summarize studies on values and preferences..." }
+      ]
+    },
+    {
+      "id": "resources",
+      "number": 5,
+      "title": "Resource Requirements (Costs)",
+      "description": "How large are the resource requirements (costs) of the intervention?",
+      "guidance": "Consider direct and indirect costs, resource use, and the perspective (health system, societal, patient). Consider cost relative to the setting and available budget.",
+      "scale": [
+        { "value": "large_costs", "label": "Large costs" },
+        { "value": "moderate_costs", "label": "Moderate costs" },
+        { "value": "negligible", "label": "Negligible costs and savings" },
+        { "value": "moderate_savings", "label": "Moderate savings" },
+        { "value": "large_savings", "label": "Large savings" },
+        { "value": "varies", "label": "Varies" },
+        { "value": "dont_know", "label": "Don't know" }
+      ],
+      "fields": [
+        { "id": "judgment", "type": "scale", "label": "Judgment" },
+        { "id": "justification", "type": "textarea", "label": "Justification", "placeholder": "Describe cost considerations..." },
+        { "id": "evidence", "type": "textarea", "label": "Research Evidence", "placeholder": "Summarize cost data or economic evaluations..." }
+      ]
+    },
+    {
+      "id": "cost_effectiveness",
+      "number": 6,
+      "title": "Cost-Effectiveness",
+      "description": "Does the cost-effectiveness of the intervention favor the intervention or the comparison?",
+      "guidance": "Consider incremental cost-effectiveness ratios (ICERs), willingness-to-pay thresholds, and how cost-effectiveness may vary across settings.",
+      "scale": [
+        { "value": "favors_comparison", "label": "Favors comparison" },
+        { "value": "probably_favors_comparison", "label": "Probably favors comparison" },
+        { "value": "no_difference", "label": "Does not favor either" },
+        { "value": "probably_favors_intervention", "label": "Probably favors intervention" },
+        { "value": "favors_intervention", "label": "Favors intervention" },
+        { "value": "varies", "label": "Varies" },
+        { "value": "no_studies", "label": "No included studies" }
+      ],
+      "fields": [
+        { "id": "judgment", "type": "scale", "label": "Judgment" },
+        { "id": "justification", "type": "textarea", "label": "Justification", "placeholder": "Summarize cost-effectiveness considerations..." },
+        { "id": "evidence", "type": "textarea", "label": "Research Evidence", "placeholder": "Reference economic evaluations or cost-effectiveness analyses..." }
+      ]
+    },
+    {
+      "id": "equity",
+      "number": 7,
+      "title": "Equity, Equality, and Non-Discrimination",
+      "description": "What would be the impact on health equity?",
+      "guidance": "Consider whether the intervention would increase or decrease health inequities. Think about access for disadvantaged populations, gender considerations, geographic disparities, and human rights implications (WHO-INTEGRATE framework).",
+      "scale": [
+        { "value": "reduced", "label": "Reduced" },
+        { "value": "probably_reduced", "label": "Probably reduced" },
+        { "value": "probably_no_impact", "label": "Probably no impact" },
+        { "value": "probably_increased", "label": "Probably increased" },
+        { "value": "increased", "label": "Increased" },
+        { "value": "varies", "label": "Varies" },
+        { "value": "dont_know", "label": "Don't know" }
+      ],
+      "fields": [
+        { "id": "judgment", "type": "scale", "label": "Judgment" },
+        { "id": "justification", "type": "textarea", "label": "Justification", "placeholder": "Describe equity impact considerations..." },
+        { "id": "evidence", "type": "textarea", "label": "Research Evidence", "placeholder": "Summarize evidence on equity implications..." }
+      ]
+    },
+    {
+      "id": "acceptability",
+      "number": 8,
+      "title": "Acceptability",
+      "description": "Is the intervention acceptable to key stakeholders?",
+      "guidance": "Consider acceptability to patients, healthcare providers, policymakers, and other key stakeholders. Cultural, ethical, and legal factors may influence acceptability.",
+      "scale": [
+        { "value": "no", "label": "No" },
+        { "value": "probably_no", "label": "Probably no" },
+        { "value": "probably_yes", "label": "Probably yes" },
+        { "value": "yes", "label": "Yes" },
+        { "value": "varies", "label": "Varies" },
+        { "value": "dont_know", "label": "Don't know" }
+      ],
+      "fields": [
+        { "id": "judgment", "type": "scale", "label": "Judgment" },
+        { "id": "justification", "type": "textarea", "label": "Justification", "placeholder": "Describe acceptability considerations..." },
+        { "id": "evidence", "type": "textarea", "label": "Research Evidence", "placeholder": "Summarize evidence on stakeholder acceptability..." }
+      ]
+    },
+    {
+      "id": "feasibility",
+      "number": 9,
+      "title": "Feasibility",
+      "description": "Is the intervention feasible to implement?",
+      "guidance": "Consider whether the intervention can be implemented in the given setting, considering infrastructure, workforce capacity, supply chain, regulatory environment, and sustainability.",
+      "scale": [
+        { "value": "no", "label": "No" },
+        { "value": "probably_no", "label": "Probably no" },
+        { "value": "probably_yes", "label": "Probably yes" },
+        { "value": "yes", "label": "Yes" },
+        { "value": "varies", "label": "Varies" },
+        { "value": "dont_know", "label": "Don't know" }
+      ],
+      "fields": [
+        { "id": "judgment", "type": "scale", "label": "Judgment" },
+        { "id": "justification", "type": "textarea", "label": "Justification", "placeholder": "Describe feasibility considerations..." },
+        { "id": "evidence", "type": "textarea", "label": "Research Evidence", "placeholder": "Summarize evidence on implementation feasibility..." }
+      ]
+    }
+  ]
+}
