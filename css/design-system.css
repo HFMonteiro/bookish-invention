@@ -294,3 +294,193 @@ a:hover {
   background: var(--color-primary-100);
   color: var(--color-primary-800);
 }
+
+/* ============================================
+   Dark Mode
+   ============================================ */
+[data-theme="dark"] {
+  /* Backgrounds & surfaces */
+  --color-bg: #0d1117;
+  --color-surface: #161b22;
+  --color-surface-alt: #1c2128;
+  --color-border: #30363d;
+
+  /* Text */
+  --color-text: #e6edf3;
+  --color-text-muted: #8b949e;
+  --color-text-light: #6e7681;
+
+  /* Accent stays vibrant */
+  --color-accent: #58a6ff;
+  --color-accent-hover: #79c0ff;
+
+  /* Neutrals (overriding for dark mode elements) */
+  --color-neutral-0: #0d1117;
+  --color-neutral-50: #161b22;
+  --color-neutral-100: #1c2128;
+  --color-neutral-200: #30363d;
+  --color-neutral-300: #484f58;
+  --color-neutral-400: #6e7681;
+  --color-neutral-500: #8b949e;
+  --color-neutral-600: #c9d1d9;
+  --color-neutral-700: #e6edf3;
+  --color-neutral-800: #f0f6fc;
+  --color-neutral-900: #ffffff;
+
+  /* Primary tint adjustments for dark */
+  --color-primary-50: #0c2d48;
+  --color-primary-100: #103d5c;
+  --color-primary-200: #1a5276;
+
+  /* Status colors: slightly muted for dark */
+  --color-adopt: #3fb950;
+  --color-adapt: #d29922;
+  --color-denovo: #58a6ff;
+
+  --color-strong: #3fb950;
+  --color-conditional: #d29922;
+  --color-against: #f85149;
+
+  color-scheme: dark;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: #161b22;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #484f58;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #6e7681;
+}
+
+[data-theme="dark"] ::selection {
+  background: var(--color-primary-200);
+  color: #e6edf3;
+}
+
+/* Dark mode for specific element overrides */
+[data-theme="dark"] .sidebar {
+  background: #0d1117;
+  border-color: #21262d;
+}
+
+[data-theme="dark"] .topbar {
+  background: rgba(22, 27, 34, 0.95);
+  border-color: #21262d;
+}
+
+[data-theme="dark"] .card {
+  background: #161b22;
+  border-color: #30363d;
+}
+
+[data-theme="dark"] .stat-card {
+  background: #161b22;
+  border-color: #30363d;
+}
+
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .form-select,
+[data-theme="dark"] .form-textarea {
+  background: #0d1117;
+  border-color: #30363d;
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .btn-secondary {
+  background: #21262d;
+  border-color: #30363d;
+  color: #c9d1d9;
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background: #30363d;
+}
+
+[data-theme="dark"] .btn-ghost {
+  color: #c9d1d9;
+}
+
+[data-theme="dark"] .btn-ghost:hover {
+  background: rgba(110, 118, 129, 0.1);
+}
+
+[data-theme="dark"] .modal {
+  background: #161b22;
+  border-color: #30363d;
+}
+
+[data-theme="dark"] .modal-overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="dark"] .pipeline {
+  background: #161b22;
+  border-color: #30363d;
+}
+
+[data-theme="dark"] .help-panel {
+  background: #161b22;
+  border-color: #30363d;
+}
+
+[data-theme="dark"] .theme-toggle {
+  background: #21262d;
+  border-color: #30363d;
+}
+
+[data-theme="dark"] table th {
+  background: #1c2128;
+  border-color: #30363d;
+  color: #e6edf3;
+}
+
+[data-theme="dark"] table td {
+  border-color: #30363d;
+}
+
+[data-theme="dark"] .tab {
+  color: #8b949e;
+}
+
+[data-theme="dark"] .tab.active {
+  color: #58a6ff;
+  border-color: #58a6ff;
+}
+
+[data-theme="dark"] .alert {
+  border-color: #30363d;
+}
+
+[data-theme="dark"] .alert-info {
+  background: rgba(88, 166, 255, 0.1);
+  border-color: rgba(88, 166, 255, 0.3);
+}
+
+[data-theme="dark"] .alert-success {
+  background: rgba(63, 185, 80, 0.1);
+  border-color: rgba(63, 185, 80, 0.3);
+}
+
+[data-theme="dark"] .alert-warning {
+  background: rgba(210, 153, 34, 0.1);
+  border-color: rgba(210, 153, 34, 0.3);
+}
+
+[data-theme="dark"] .onboarding-card {
+  background: #161b22;
+  border-color: #30363d;
+}
+
+[data-theme="dark"] .onboarding-card:hover {
+  border-color: #58a6ff;
+  background: #1c2128;
+}
+
+[data-theme="dark"] .sidebar-nav-item.active {
+  background: rgba(88, 166, 255, 0.1);
+  color: #58a6ff;
+}

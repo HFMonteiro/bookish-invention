@@ -32,12 +32,18 @@ const DecisionModule = (() => {
         </p>
       </div>
 
+      <div id="decision-flow-viz" style="margin-bottom:var(--space-8); background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:var(--radius-lg); padding:var(--space-4);"></div>
+
       <div class="stagger-children" style="display:flex; flex-direction:column; gap:var(--space-6);">
         ${questions.map((q, i) => renderDecisionCard(q, i)).join('')}
       </div>
     `;
 
     attachEvents(container);
+
+    // Render visual flowchart
+    const flowViz = document.getElementById('decision-flow-viz');
+    if (flowViz) DecisionFlow.render(flowViz);
   }
 
   function renderDecisionCard(q, idx) {

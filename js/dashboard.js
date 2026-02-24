@@ -108,7 +108,17 @@ const DashboardModule = (() => {
 
       <!-- Questions Summary Table -->
       ${questions.length > 0 ? renderQuestionsTable(questions) : ''}
+
+      <!-- Project Timeline -->
+      <div class="card mb-6">
+        <h4 style="margin-bottom:var(--space-4);">Project Timeline</h4>
+        <div id="timeline-viz"></div>
+      </div>
     `;
+
+    // Render timeline AFTER DOM is built
+    const timelineViz = document.getElementById('timeline-viz');
+    if (timelineViz && typeof Timeline !== 'undefined') Timeline.render(timelineViz);
   }
 
   function renderStepProgress(steps) {
@@ -233,6 +243,30 @@ const DashboardModule = (() => {
         </div>
       </div>
     `;
+  }
+
+  function renderDecisionBadge(type) {
+    const map = { adopt: 'badge-high', adapt: 'badge-moderate', denovo: 'badge-pending' };
+    const label = type ? (type.charAt(0).toUpperCase() + type.slice(1)) : 'Pending';
+    return `<span class="badge ${map[type] || 'badge-pending'}">${label}</span>`;
+  }
+
+  function renderDirectionBadge(dir) {
+    const map = { favors_intervention: 'badge-high', favors_comparison: 'badge-verylow', no_difference: 'badge-moderate' };
+    const labels = { favors_intervention: 'For', favors_comparison: 'Against', no_difference: 'Neutral' };
+    return `<span class="badge ${map[dir] || 'badge-pending'}">${labels[dir] || 'Pending'}</span>`;
+  }
+
+  function renderStrengthBadge(s) {
+    const map = { strong: 'badge-high', conditional: 'badge-moderate' };
+    const label = s ? (s.charAt(0).toUpperCase() + s.slice(1)) : 'Pending';
+    return `<span class="badge ${map[s] || 'badge-pending'}">${label}</span>`;
+  }
+
+  function renderCertaintyBadge(c) {
+    const map = { high: 'badge-high', moderate: 'badge-moderate', low: 'badge-verylow', very_low: 'badge-verylow' };
+    const label = c ? (c.replace('_', ' ').charAt(0).toUpperCase() + c.replace('_', ' ').slice(1)) : 'Pending';
+    return `<span class="badge ${map[c] || 'badge-pending'}">${label}</span>`;
   }
 
   function escapeHtml(str) {

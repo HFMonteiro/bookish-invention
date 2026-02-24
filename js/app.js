@@ -31,14 +31,21 @@ const App = (() => {
     let lastSaveTime = null;
     let previousMilestones = {};
 
+    function escapeHtml(str) {
+        if (!str) return '';
+        const s = String(str);
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
     function init() {
         State.load();
+
+        // Don't auto-create a project — let the user see the welcome screen
+        // with New / Import / Demo options
+
         buildSidebar();
+        renderProjectSwitcher();
         updateSidebar();
-        initTheme();          // #2 Dark mode
-        initKeyboardShortcuts(); // #5
-        initAutoSave();        // #3
-        captureMilestoneBaseline();
 
         // Initialize RAG knowledge base for help panel
         if (typeof RAG !== 'undefined') {
@@ -48,12 +55,21 @@ const App = (() => {
             });
         }
 
-        // Listen for state changes to update pipeline/sidebar
+        // Listen for state changes
         State.on('change', () => {
             updateSidebar();
+            renderProjectSwitcher();
             renderPipeline();
-            updateAutoSaveTime();
-            checkMilestones();
+            // Update auto-save indicator
+            lastSaveTime = new Date();
+            const timeEl = document.getElementById('autosave-time');
+            if (timeEl) timeEl.textContent = 'Saved';
+        });
+
+        State.on('projectSwitched', () => {
+            navigate(currentView, true); // Refresh current view
+            updateSidebar();
+            renderProjectSwitcher();
         });
 
         // Hash-based routing
@@ -62,8 +78,80 @@ const App = (() => {
             navigate(hash, false);
         });
 
-        const initHash = location.hash.replace('#', '') || (State.hasProject() ? 'dashboard' : 'project');
+        // Keyboard shortcuts (Ctrl+S to save, ? for help)
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                State.save();
+                showToast('Project saved!', 'success');
+            }
+            if (e.key === '?' && !e.target.closest('input, textarea, select')) {
+                toggleHelpPanel();
+            }
+        });
+
+        const initHash = location.hash.replace('#', '') || 'dashboard';
         navigate(initHash, false);
+    }
+
+    // ============================================
+    // Project Switcher
+    // ============================================
+    function renderProjectSwitcher() {
+        const header = document.querySelector('.sidebar-header');
+        if (!header) return;
+
+        // Create or get container
+        let container = document.getElementById('project-switcher-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'project-switcher-container';
+            container.className = 'project-switcher';
+            header.innerHTML = ''; // Clear original header content
+            header.appendChild(container);
+        }
+
+        const project = State.get();
+        const projects = State.listProjects();
+
+        container.innerHTML = `
+            <div class="project-current" onclick="App.toggleProjectMenu()">
+                <div class="project-name">${escapeHtml(project?.meta?.title || 'No Project')}</div>
+                <div class="project-chevron">▼</div>
+            </div>
+            <div class="project-menu" id="project-menu">
+                ${projects.map(p => `
+                    <div class="project-menu-item ${p.meta.id === project?.meta.id ? 'active' : ''}" onclick="App.handleProjectSwitch('${p.meta.id}')">
+                        <div class="project-menu-title">${escapeHtml(p.meta.title)}</div>
+                        <div class="project-menu-meta">${new Date(p.meta.dateModified).toLocaleDateString()}</div>
+                    </div>
+                `).join('')}
+                <div class="project-menu-divider"></div>
+                <div class="project-menu-item project-action" onclick="App.handleCreateProject()">
+                    <span>+ New Project</span>
+                </div>
+            </div>
+        `;
+    }
+
+    function toggleProjectMenu() {
+        const menu = document.getElementById('project-menu');
+        menu?.classList.toggle('active');
+    }
+
+    function handleProjectSwitch(id) {
+        State.switchProject(id);
+        toggleProjectMenu();
+    }
+
+    async function handleCreateProject() {
+        const title = prompt('Enter project title:');
+        if (title) {
+            const p = State.createNew({ title });
+            State.switchProject(p.meta.id);
+            toggleProjectMenu();
+            navigate('project'); // Go to settings for the new project
+        }
     }
 
     // ============================================
@@ -478,7 +566,35 @@ const App = (() => {
         }, 3000);
     }
 
-    return { init, navigate, updateSidebar, showToast, toggleTheme, toggleHelpPanel, confirmDialog, renderPipeline };
+    // ============================================
+    // Dark Mode Toggle
+    // ============================================
+    function toggleTheme() {
+        const root = document.documentElement;
+        const current = root.getAttribute('data-theme');
+        const newTheme = current === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', newTheme);
+        localStorage.setItem('grade_theme', newTheme);
+
+        const btn = document.getElementById('btn-theme');
+        if (btn) btn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    }
+
+    // Restore saved theme on load
+    (function restoreTheme() {
+        const saved = localStorage.getItem('grade_theme');
+        if (saved === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            const btn = document.getElementById('btn-theme');
+            if (btn) btn.textContent = '☀️';
+        }
+    })();
+
+    return {
+        init, navigate, toggleHelpPanel, toggleTheme, confirmDialog, showToast,
+        updateSidebar, renderPipeline,
+        toggleProjectMenu, handleProjectSwitch, handleCreateProject
+    };
 })();
 
 // Boot

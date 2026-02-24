@@ -54,6 +54,8 @@ const EtdModule = (() => {
             <p class="content-subtitle">Assess each domain for the selected PICO question.</p>
           </div>
           <div class="flex items-center gap-3">
+            <button class="btn btn-ghost btn-sm" id="btn-toggle-sof">📋 View SoF Table</button>
+            <button class="btn btn-ghost btn-sm" onclick="EtdCompare.show('${currentPico.id}')">⚖️ Compare with Source</button>
             <span class="text-sm text-muted">${completedDomains}/9 domains</span>
             <div style="width:120px; height:6px; background:var(--color-neutral-200); border-radius:var(--radius-pill);">
               <div style="width:${progressPct}%; height:100%; background:linear-gradient(90deg,var(--color-primary-500),var(--color-teal-500)); border-radius:var(--radius-pill); transition:width 0.3s;"></div>
@@ -62,9 +64,33 @@ const EtdModule = (() => {
         </div>
       </div>
 
+      <div id="etd-main-content">
+        <!-- Tabs -->
+        <div class="tabs mb-6" id="etd-view-tabs">
+            <div class="tab ${(window._etdSubView || 'assess') === 'assess' ? 'active' : ''}" data-view="assess">Domain Assessment</div>
+            <div class="tab ${(window._etdSubView || 'assess') === 'sof' ? 'active' : ''}" data-view="sof">Summary of Findings (SoF)</div>
+        </div>
+
+        <div id="etd-subview-container">
+            ${(window._etdSubView || 'assess') === 'assess' ? renderAssessView(currentPico, assessments) : renderSofView(currentPico)}
+        </div>
+      </div>
+
+      <div style="margin-top:var(--space-6); text-align:right;">
+        <button class="btn btn-primary btn-lg" id="btn-etd-next">
+          Continue to Decision →
+        </button>
+      </div>
+    `;
+
+    attachEvents(container, currentPico.id);
+  }
+
+  function renderAssessView(currentPico, assessments) {
+    return `
       <!-- PICO Question Selector -->
       <div class="tabs" id="etd-pico-tabs">
-        ${questions.map((q, i) => `
+        ${State.getPicoQuestions().map((q, i) => `
           <button class="tab ${q.id === currentPico.id ? 'active' : ''}" data-pico-id="${q.id}">
             Q${i + 1}: ${escapeHtml(q.topic || q.population?.substring(0, 30) + '...')}
           </button>
@@ -85,15 +111,7 @@ const EtdModule = (() => {
       <div id="etd-domains">
         ${etdTemplate.domains.map(d => renderDomain(d, assessments[d.id], currentPico.id)).join('')}
       </div>
-
-      <div style="margin-top:var(--space-6); text-align:right;">
-        <button class="btn btn-primary btn-lg" id="btn-etd-next">
-          Continue to Decision →
-        </button>
-      </div>
     `;
-
-    attachEvents(container, currentPico.id);
   }
 
   function renderDomain(domain, assessment, picoId) {
@@ -167,12 +185,43 @@ const EtdModule = (() => {
       });
     });
 
-    // Auto-save on scale change
-    container.querySelectorAll('input[type="radio"][data-domain]').forEach(radio => {
-      radio.addEventListener('change', (e) => {
-        const domainId = e.target.dataset.domain;
-        const fieldId = e.target.dataset.field;
-        saveField(picoId, domainId, fieldId, e.target.value);
+    // SoF tab switching
+    container.querySelectorAll('#etd-view-tabs .tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        window._etdSubView = tab.dataset.view;
+        render(container);
+      });
+    });
+
+    // Toggle button in header
+    container.querySelector('#btn-toggle-sof')?.addEventListener('click', () => {
+      window._etdSubView = (window._etdSubView === 'sof') ? 'assess' : 'sof';
+      render(container);
+    });
+
+    // Add outcome
+    container.querySelector('#btn-add-outcome')?.addEventListener('click', () => showOutcomeModal(picoId));
+
+    // Edit outcome
+    container.querySelectorAll('.btn-edit-outcome').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = parseInt(e.currentTarget.dataset.idx);
+        const outcomes = State.getPicoOutcomes(picoId);
+        showOutcomeModal(picoId, outcomes[idx], idx);
+      });
+    });
+
+    // Delete outcome
+    container.querySelectorAll('.btn-delete-outcome').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const idx = parseInt(e.currentTarget.dataset.idx);
+        const ok = await App.confirmDialog({ title: 'Delete Outcome', message: 'Remove this outcome from the SoF table?' });
+        if (ok) {
+          const outcomes = State.getPicoOutcomes(picoId);
+          outcomes.splice(idx, 1);
+          State.setPicoOutcomes(picoId, outcomes);
+          render(container);
+        }
       });
     });
 
@@ -196,6 +245,132 @@ const EtdModule = (() => {
     current[fieldId] = value;
     State.setEtdAssessment(picoId, domainId, current);
     App.updateSidebar();
+  }
+
+  function showOutcomeModal(picoId, existing = null, editIdx = -1) {
+    const isEdit = !!existing;
+    const overlay = document.getElementById('modal-overlay');
+    overlay.innerHTML = `
+      <div class="modal">
+        <div class="modal-header">
+          <h3 class="modal-title">${isEdit ? 'Edit' : 'Add'} Outcome</h3>
+          <button class="modal-close" id="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Outcome Name</label>
+            <input type="text" class="form-input" id="sof-name" value="${escapeHtml(existing?.name || '')}" placeholder="e.g., Mortality at 30 days">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Relative Effect (95% CI)</label>
+            <input type="text" class="form-input" id="sof-relative" value="${escapeHtml(existing?.relative || '')}" placeholder="e.g., RR 0.85 (0.70-0.95)">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Anticipated Absolute Effect</label>
+            <input type="text" class="form-input" id="sof-absolute" value="${escapeHtml(existing?.absolute || '')}" placeholder="e.g., 10 fewer per 1000">
+          </div>
+          <div style="display:flex; gap:var(--space-4);">
+            <div class="form-group" style="flex:1">
+              <label class="form-label">Certainty</label>
+              <select class="form-select" id="sof-certainty">
+                  <option value="high" ${existing?.certainty === 'high' ? 'selected' : ''}>High</option>
+                  <option value="moderate" ${existing?.certainty === 'moderate' ? 'selected' : ''}>Moderate</option>
+                  <option value="low" ${existing?.certainty === 'low' ? 'selected' : ''}>Low</option>
+                  <option value="very_low" ${existing?.certainty === 'very_low' ? 'selected' : ''}>Very Low</option>
+              </select>
+            </div>
+            <div class="form-group" style="flex:1">
+              <label class="form-label">Participants / Studies</label>
+              <input type="text" class="form-input" id="sof-parts" value="${escapeHtml(existing?.participants || '')}" placeholder="e.g., 1500 (3 studies)">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="modal-cancel">Cancel</button>
+          <button class="btn btn-primary" id="modal-save-outcome">${isEdit ? 'Update' : 'Add'}</button>
+        </div>
+      </div>
+    `;
+    overlay.classList.add('active');
+
+    const close = () => overlay.classList.remove('active');
+    overlay.querySelector('#modal-close').onclick = close;
+    overlay.querySelector('#modal-cancel').onclick = close;
+    overlay.querySelector('#modal-save-outcome').onclick = () => {
+      const data = {
+        name: document.getElementById('sof-name').value.trim(),
+        relative: document.getElementById('sof-relative').value.trim(),
+        absolute: document.getElementById('sof-absolute').value.trim(),
+        certainty: document.getElementById('sof-certainty').value,
+        participants: document.getElementById('sof-parts').value.trim()
+      };
+      if (!data.name) return;
+
+      const outcomes = State.getPicoOutcomes(picoId);
+      if (isEdit) outcomes[editIdx] = data;
+      else outcomes.push(data);
+
+      State.setPicoOutcomes(picoId, outcomes);
+      close();
+      render(document.getElementById('main-content'));
+    };
+  }
+
+  // Summary of Findings view
+  function renderSofView(currentPico) {
+    const outcomes = State.getPicoOutcomes(currentPico.id);
+    const certaintyIcons = {
+      high: '⊕⊕⊕⊕',
+      moderate: '⊕⊕⊕⊖',
+      low: '⊕⊕⊖⊖',
+      very_low: '⊕⊖⊖⊖'
+    };
+
+    return `
+      <div class="card mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <h4>Summary of Findings — ${escapeHtml(currentPico.topic || 'PICO')}</h4>
+          <button class="btn btn-primary btn-sm" id="btn-add-outcome">+ Add Outcome</button>
+        </div>
+        ${outcomes.length === 0 ? `
+          <div class="empty-state" style="padding:var(--space-8);">
+            <div class="empty-state-illustration">📋</div>
+            <div class="empty-state-title">No Outcomes Yet</div>
+            <div class="empty-state-text">Add clinical outcomes to build the Summary of Findings table.</div>
+          </div>
+        ` : `
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Outcome</th>
+                  <th>Relative Effect (95% CI)</th>
+                  <th>Anticipated Absolute Effect</th>
+                  <th>Certainty</th>
+                  <th>Participants (Studies)</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${outcomes.map((o, idx) => `
+                  <tr>
+                    <td><strong>${escapeHtml(o.name)}</strong></td>
+                    <td>${escapeHtml(o.relative || '—')}</td>
+                    <td>${escapeHtml(o.absolute || '—')}</td>
+                    <td><span class="badge badge-${o.certainty === 'high' ? 'high' : o.certainty === 'moderate' ? 'moderate' : 'verylow'}">${certaintyIcons[o.certainty] || '—'} ${(o.certainty || '').replace('_', ' ')}</span></td>
+                    <td>${escapeHtml(o.participants || '—')}</td>
+                    <td>
+                      <button class="btn btn-ghost btn-xs btn-edit-outcome" data-idx="${idx}">✏️</button>
+                      <button class="btn btn-ghost btn-xs btn-delete-outcome" data-idx="${idx}">🗑️</button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `}
+      </div>
+    `;
   }
 
   function escapeHtml(str) {

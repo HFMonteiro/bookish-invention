@@ -48,12 +48,23 @@ const ExportModule = (() => {
 
         <div class="card hover-lift">
           <div class="card-body">
-            <div style="font-size:2rem; margin-bottom:var(--space-3);">🖨️</div>
-            <h4 style="margin-bottom:var(--space-2);">Print View</h4>
-            <p class="text-sm text-muted mb-4">Open a print-friendly version of the full report.</p>
+            <div style="font-size:2rem; margin-bottom:var(--space-3);">🤝</div>
+            <h4 style="margin-bottom:var(--space-2);">Team Merge</h4>
+            <p class="text-sm text-muted mb-4">Import and merge work from a team member's data export.</p>
           </div>
           <div class="card-footer">
-            <button class="btn btn-secondary" id="btn-export-print">Print Report</button>
+            <button class="btn btn-secondary" id="btn-team-merge">Merge Data</button>
+          </div>
+        </div>
+
+        <div class="card hover-lift">
+          <div class="card-body">
+            <div style="font-size:2rem; margin-bottom:var(--space-3);">📋</div>
+            <h4 style="margin-bottom:var(--space-2);">WHO Style Export</h4>
+            <p class="text-sm text-muted mb-4">Generate report formatted for WHO guideline publications.</p>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-primary" id="btn-export-who">Download Report</button>
           </div>
         </div>
       </div>
@@ -93,8 +104,30 @@ const ExportModule = (() => {
       App.showToast('JSON exported!', 'success');
     });
 
-    container.querySelector('#btn-export-print')?.addEventListener('click', () => {
-      openPrintView();
+    container.querySelector('#btn-team-merge')?.addEventListener('click', () => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json';
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (re) => {
+          try {
+            const data = JSON.parse(re.target.result);
+            TeamMerge.show(data);
+          } catch (err) {
+            App.showToast('Invalid JSON file', 'error');
+          }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    });
+
+    container.querySelector('#btn-export-who')?.addEventListener('click', () => {
+      const md = generateMarkdownReport({ style: 'who' });
+      downloadFile(md, getFileName('md'), 'text/markdown');
+      App.showToast('WHO Report generated!', 'success');
     });
 
     container.querySelector('#btn-copy-report')?.addEventListener('click', () => {
@@ -105,7 +138,8 @@ const ExportModule = (() => {
     });
   }
 
-  function generateMarkdownReport() {
+  function generateMarkdownReport(options = {}) {
+    const { style } = options;
     const project = State.get();
     const m = project.meta;
     const questions = State.getPicoQuestions();
@@ -113,8 +147,12 @@ const ExportModule = (() => {
 
     let md = '';
 
-    // Title
-    md += `# ${m.title}\n\n`;
+    if (style === 'who') {
+      md += `# WHO Guideline: ${m.title}\n\n`;
+      md += `**Prepared in accordance with:** WHO Handbook for Guideline Development, 2nd Edition (2014)\n\n`;
+    } else {
+      md += `# ${m.title}\n\n`;
+    }
     md += `**Status:** ${m.status}  \n`;
     md += `**Authors:** ${m.authors || 'N/A'}  \n`;
     md += `**Date:** ${new Date(m.dateModified).toLocaleDateString()}  \n`;

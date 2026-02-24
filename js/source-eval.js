@@ -249,28 +249,46 @@ const SourceEvalModule = (() => {
     const scores = source.agreeScores || {};
 
     overlay.innerHTML = `
-      <div class="modal" style="max-width:680px;">
+      <div class="modal modal-lg">
         <div class="modal-header">
           <h3 class="modal-title">Quality Assessment (AGREE II)</h3>
           <button class="modal-close" id="modal-close">&times;</button>
         </div>
         <div class="modal-body">
-          <p class="text-sm text-muted mb-4">Rate each domain from 1 (Strongly Disagree) to 7 (Strongly Agree).</p>
-          ${AGREE_CRITERIA.map(c => `
-            <div class="form-group">
-              <label class="form-label">${c.label}</label>
-              <p class="text-sm text-muted" style="margin-bottom:var(--space-2);">${c.desc}</p>
-              <div class="scale-group">
-                ${[1, 2, 3, 4, 5, 6, 7].map(v => `
-                  <div class="scale-option">
-                    <input type="radio" name="agree-${c.id}" id="agree-${c.id}-${v}" value="${v}"
-                      ${scores[c.id] === v ? 'checked' : ''}>
-                    <label for="agree-${c.id}-${v}">${v}</label>
-                  </div>
-                `).join('')}
-              </div>
+          <div class="agree-overview-card mb-6">
+            <div class="agree-gauge-container">
+                <svg width="120" height="120" viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="54" fill="none" stroke="var(--color-neutral-100)" stroke-width="10" />
+                    <circle cx="60" cy="60" r="54" fill="none" stroke="var(--color-primary-500)" stroke-width="10" 
+                        stroke-dasharray="339.29" stroke-dashoffset="${339.29 * (1 - (calculateAvg(scores) / 7))}"
+                        id="agree-gauge-fill" style="transition: stroke-dashoffset 0.5s ease;" />
+                    <text x="60" y="65" text-anchor="middle" font-size="24" font-weight="700" fill="var(--color-text-primary)" id="agree-gauge-pct">${Math.round((calculateAvg(scores) / 7) * 100)}%</text>
+                </svg>
             </div>
-          `).join('')}
+            <div>
+                <div class="font-bold mb-1">Overall Quality Score</div>
+                <div class="text-sm text-muted">Based on 6 domains of development rigor and transparency.</div>
+                <div id="agree-trust-badge" class="mt-2">${getTrustBadge(calculateAvg(scores))}</div>
+            </div>
+          </div>
+
+          <div class="agree-grid">
+            ${AGREE_CRITERIA.map(c => `
+              <div class="agree-domain-card">
+                <div class="font-bold text-sm mb-1">${c.label}</div>
+                <div class="text-xs text-muted mb-3">${c.desc}</div>
+                <div class="scale-group">
+                  ${[1, 2, 3, 4, 5, 6, 7].map(v => `
+                    <div class="scale-option">
+                      <input type="radio" name="agree-${c.id}" id="agree-${c.id}-${v}" value="${v}"
+                        ${scores[c.id] === v ? 'checked' : ''} onchange="SourceEvalModule.updateGauge()">
+                      <label for="agree-${c.id}-${v}">${v}</label>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            `).join('')}
+          </div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-secondary" id="modal-cancel">Cancel</button>
@@ -308,10 +326,37 @@ const SourceEvalModule = (() => {
     };
   }
 
-  function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  function calculateAvg(scores) {
+    const vals = Object.values(scores);
+    if (vals.length === 0) return 0;
+    return vals.reduce((a, b) => a + b, 0) / vals.length;
   }
 
-  return { render };
+  function getTrustBadge(avg) {
+    if (avg <= 0) return '<span class="badge badge-pending">Pending</span>';
+    if (avg >= 5.5) return '<span class="badge badge-high">High Trust</span>';
+    if (avg >= 3.5) return '<span class="badge badge-moderate">Moderate Trust</span>';
+    return '<span class="badge badge-verylow">Low Trust</span>';
+  }
+
+  function updateGauge() {
+    const scores = {};
+    AGREE_CRITERIA.forEach(c => {
+      const sel = document.querySelector(`input[name="agree-${c.id}"]:checked`);
+      if (sel) scores[c.id] = parseInt(sel.value);
+    });
+
+    const avg = calculateAvg(scores);
+    const pct = Math.round((avg / 7) * 100);
+
+    const fill = document.getElementById('agree-gauge-fill');
+    const text = document.getElementById('agree-gauge-pct');
+    const badge = document.getElementById('agree-trust-badge');
+
+    if (fill) fill.style.strokeDashoffset = 339.29 * (1 - (avg / 7));
+    if (text) text.textContent = `${pct}%`;
+    if (badge) badge.innerHTML = getTrustBadge(avg);
+  }
+
+  return { render, updateGauge };
 })();
